@@ -1,7 +1,8 @@
 <script setup lang="ts">
-type TypographyVariant =
+export type TypographyVariant =
   | "h1"
   | "h2"
+  | "h2Hero"
   | "h3"
   | "body"
   | "bodySm"
@@ -9,7 +10,6 @@ type TypographyVariant =
   | "caption"
   | "navigation"
   | "footer";
-  
 
 interface Props {
   as?: string;
@@ -22,17 +22,26 @@ withDefaults(defineProps<Props>(), {
 });
 
 const variants: Record<TypographyVariant, string> = {
-  h1: "text-5xl font-medium",
-  h2: "text-4xl font-medium",
-  h3: "text-2xl font-medium",
+  h1: "text-5xl",
+
+  h2: "text-4xl",
+
+  h2Hero: "text-[64px] leading-none",
+
+  h3: "text-2xl",
+
   body: "text-base",
-  bodySm: "text-sm",
-  bodyLg: "text-lg",
+
+  bodySm: "text-sm leading-6 text-gray",
+
+  bodyLg: "text-[18px] leading-7 text-gray",
   navigation:
-    "font-medium text-base transition-opacity duration-200 hover:opacity-70",
+    "text-base transition-opacity duration-200 hover:opacity-70",
 
   caption: "text-sm text-gray-500",
-  footer: "text-[14px] text-footer-text hover:text-white transition-colors"
+
+  footer:
+    "text-[14px] text-footer-text hover:text-white transition-colors",
 };
 </script>
 

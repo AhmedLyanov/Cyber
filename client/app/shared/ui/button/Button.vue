@@ -23,17 +23,14 @@ const variants: Record<ButtonVariant, string> = {
     "bg-black text-white hover:opacity-90",
 
   outline:
-    "border border-current bg-transparent hover:bg-black hover:text-white",
-
-  ghost:
-    "bg-transparent hover:bg-gray-100",
+    "w-[184px] border border-current bg-transparent hover:bg-black hover:text-white",
 };
 </script>
 
 <template>
   <button
     :disabled="disabled"
-    class="inline-flex items-center justify-center rounded-md px-6 py-3 font-medium transition-all duration-200 cursor-pointer"
+    class="inline-flex items-center justify-center rounded-md px-6 py-3 font-medium transition-all duration-200 cursor-pointer w-[184px]"
     :class="[
       variants[variant],
       disabled && 'opacity-50 cursor-not-allowed'
