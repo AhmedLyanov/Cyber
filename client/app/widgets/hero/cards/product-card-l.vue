@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import ProductContent from '~/entities/product/ui/ProductContent.vue'
+import ProductContent from '~/entities/product/ui/product-content.vue'
 import MacBookAir from '/images/MacBookAir.png'
 
 </script>

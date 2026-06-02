@@ -18,6 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import ProductContent from '~/entities/product/ui/ProductContent.vue'
+import ProductContent from '~/entities/product/ui/product-content.vue'
 import PlayStation from '/images/PlayStation.png'
 </script>

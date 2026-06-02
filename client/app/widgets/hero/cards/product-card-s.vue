@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ProductContent from '~/entities/product/ui/ProductContent.vue'
+import ProductContent from '~/entities/product/ui/product-content.vue'
 
 interface Props {
   title: string

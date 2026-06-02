@@ -1,5 +1,5 @@
 <template>
-    <div class="px-40 py-16">
+    <section class="px-40 py-16 bg-category-background">
         <div class="flex justify-between items-center mb-8">
             <Typography variant="h3">
                 Browse By Category
@@ -13,7 +13,7 @@
         <div class="flex gap-6 overflow-x-auto">
             <CategoryCard v-for="category in categories" :key="category.id" :category="category" />
         </div>
-    </div>
+    </section>
 </template>
 
 <script lang="ts" setup>

@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import ProductCardLarge from "./cards/ProductCardL.vue"
-import ProductCardMedium from "./cards/ProductCardM.vue"
-import ProductCardSmall from "./cards/ProductCardS.vue"
+import ProductCardLarge from "./cards/product-card-l.vue"
+import ProductCardMedium from "./cards/product-card-m.vue"
+import ProductCardSmall from "./cards/product-card-s.vue"
 </script>

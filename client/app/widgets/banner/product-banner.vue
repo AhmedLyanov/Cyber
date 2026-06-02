@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center w-full h-157.5 bg-product-banner px-40">
+  <section class="flex items-center w-full h-157.5 bg-product-banner px-40">
     <div class="flex items-center flex-1">
       <ProductContent
         title="IPhone 14"
@@ -18,9 +18,9 @@
         src="/images/IPhone.png"
       />
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
-import ProductContent from "~/entities/product/ui/ProductContent.vue";
+import ProductContent from "~/entities/product/ui/product-content.vue";
 </script>

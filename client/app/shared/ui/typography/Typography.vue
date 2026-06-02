@@ -26,7 +26,7 @@ const variants: Record<TypographyVariant, string> = {
 
   h2: "text-4xl",
 
-  h2Hero: "text-[64px] leading-none",
+  h2Hero: "text-[94px] leading-none",
 
   h3: "text-2xl",
 
