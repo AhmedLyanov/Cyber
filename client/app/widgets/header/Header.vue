@@ -1,5 +1,5 @@
 <template>
-  <header class="flex items-center gap-16 px-40 py-4 ">
+  <header class="flex items-center gap-16 px-40 py-4 border-b border-header-border">
         <Logo />
         <Input />
         <Navigation />

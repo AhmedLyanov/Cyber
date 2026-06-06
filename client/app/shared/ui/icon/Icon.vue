@@ -19,9 +19,11 @@ import SmartWatchesIcon from '~/assets/images/Smart Watches.svg'
 import ArrowLeft from '~/assets/images/arrow_left.svg'
 import ArrowRight from '~/assets/images/arrow_right.svg'
 import HeartIcon from '~/assets/images/favourite.svg'
+import FilterArrow from '~/assets/images/Filter-arrow.svg'
+import BreadcrumbArrow from '~/assets/images/Breadcrumb-arrow.svg'
 
 interface Props {
-    name: 'computers' | 'phones' | 'gaming' | 'headphones' | 'cameras' | 'smart-watches' | 'arrow-left' | 'arrow-right' | 'favourite';
+    name: 'computers' | 'phones' | 'gaming' | 'headphones' | 'cameras' | 'smart-watches' | 'arrow-left' | 'arrow-right' | 'favourite' | 'filter-arrow' | 'breadcrumb-arrow';
     size?: 'sm' | 'md' | 'lg'
 }
 
@@ -39,7 +41,9 @@ const iconSrc = computed(() => {
         'smart-watches': SmartWatchesIcon,
         'arrow-left': ArrowLeft,
         'arrow-right': ArrowRight,
-         favourite: HeartIcon
+        favourite: HeartIcon,
+        'filter-arrow': FilterArrow,
+        'breadcrumb-arrow': BreadcrumbArrow
     }
     return icons[props.name]
 })
