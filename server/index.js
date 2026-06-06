@@ -18,13 +18,16 @@ import productRoutes from "./routes/product.routes.js";
 import cartRoutes from "./routes/cart.routes.js"
 const app = express();
 const PORT = process.env.PORT || 5000;
-
+const CLIENT_ORIGINS = [
+  process.env.CLIENT_URL || 'http://localhost:3000',
+  process.env.CLIENT_URL_ALT || 'http://localhost:5173',
+];
 
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173'
+  origin: CLIENT_ORIGINS,
+  credentials: true,
 }));
-
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

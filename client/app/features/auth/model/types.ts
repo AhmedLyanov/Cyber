@@ -1,4 +1,3 @@
-// Request DTOs
 export interface LoginDto {
   email: string;
   password: string;
@@ -11,7 +10,6 @@ export interface RegisterDto {
   password: string;
 }
 
-// Response DTOs
 export interface AuthResponse {
   token: string;
   user: {
@@ -28,8 +26,6 @@ export interface ProfileResponse {
   name: string;
   surname: string;
 }
-
-// Error types
 export interface ApiError {
   message: string;
   statusCode?: number;
