@@ -10,9 +10,9 @@ import { authApi } from '../api/auth.api'
 export const useLogin = () => {
   const router = useRouter()
   const authToken = useCookie<string>('auth_token', {
-    maxAge: 60 * 60 * 24 * 7, 
-    secure: true,
-    httpOnly: true,
+    maxAge: 60 * 60 * 24 * 7,
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: false,
     sameSite: 'strict',
   })
 
