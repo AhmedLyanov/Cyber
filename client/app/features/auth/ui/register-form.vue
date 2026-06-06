@@ -1,74 +1,80 @@
 <template>
-  <div class="max-w-md mx-auto mt-20 p-6 bg-white rounded-lg shadow-md">
-    <Typography variant="h2" class="text-center mb-2">Create account</Typography>
-    <Typography variant="bodyLg" class="text-center text-gray mb-6">Create a new account to start shopping</Typography>
+  <div class="max-w-md mx-auto mt-12 p-5 bg-white rounded-lg">
+    <h2 class="text-3xl text-center mb-1">Create account</h2>
+    <p class="text-[16px] leading-6 text-gray text-center mb-5">Create a new account to start shopping</p>
 
-    <form @submit.prevent="handleSubmit" class="space-y-4">
-      <div>
-        <label class="block text-sm text-gray-700 mb-1">Name</label>
-        <input 
-          v-model="name" 
-          type="text" 
-          required 
-          :disabled="isPending"
-          class="mt-1 w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
-        />
+    <form @submit.prevent="handleSubmit" class="space-y-3">
+      <div class="flex gap-3">
+        <div class="flex-1">
+          <label class="block text-sm font-medium text-primary mb-1">Name</label>
+          <input 
+            v-model="name" 
+            type="text" 
+            required 
+            :disabled="isPending"
+            class="w-full px-3 py-1.5 bg-input border border-dropdown-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          />
+        </div>
+
+        <div class="flex-1">
+          <label class="block text-sm font-medium text-primary mb-1">Surname</label>
+          <input 
+            v-model="surname" 
+            type="text" 
+            required 
+            :disabled="isPending"
+            class="w-full px-3 py-1.5 bg-input border border-dropdown-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          />
+        </div>
       </div>
 
       <div>
-        <label class="block text-sm text-gray-700 mb-1">Surname</label>
-        <input 
-          v-model="surname" 
-          type="text" 
-          required 
-          :disabled="isPending"
-          class="mt-1 w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
-        />
-      </div>
-
-      <div>
-        <label class="block text-sm text-gray-700 mb-1">Email</label>
+        <label class="block text-sm font-medium text-primary mb-1">Email</label>
         <input 
           v-model="email" 
           type="email" 
           required 
           :disabled="isPending"
-          class="mt-1 w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+          class="w-full px-3 py-1.5 bg-input border border-dropdown-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         />
       </div>
 
       <div>
-        <label class="block text-sm text-gray-700 mb-1">Password</label>
+        <label class="block text-sm font-medium text-primary mb-1">Password</label>
         <input 
           v-model="password" 
           type="password" 
           required 
           :disabled="isPending"
-          class="mt-1 w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+          class="w-full px-3 py-1.5 bg-input border border-dropdown-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         />
       </div>
 
       <div>
-        <label class="block text-sm text-gray-700 mb-1">Confirm password</label>
+        <label class="block text-sm font-medium text-primary mb-1">Confirm password</label>
         <input 
           v-model="confirmPassword" 
           type="password" 
           required 
           :disabled="isPending"
-          class="mt-1 w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+          class="w-full px-3 py-1.5 bg-input border border-dropdown-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         />
       </div>
 
-      <div v-if="validationError" class="text-red-600 text-sm">{{ validationError }}</div>
-      <div v-if="error" class="text-red-600 text-sm">
+      <div v-if="validationError" class="text-red-600 text-xs bg-red-50 p-1.5 rounded">{{ validationError }}</div>
+      <div v-if="error" class="text-red-600 text-xs bg-red-50 p-1.5 rounded">
         {{ error?.message || 'Registration failed. Please try again.' }}
       </div>
 
-      <div class="flex items-center justify-between">
-        <Button type="submit" :disabled="isPending">
+      <div class="flex items-center justify-between pt-1">
+        <button 
+          type="submit" 
+          :disabled="isPending"
+          class="px-4 py-1.5 bg-primary text-white rounded-lg font-medium transition-opacity duration-200 hover:opacity-70 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+        >
           {{ isPending ? 'Registering...' : 'Register' }}
-        </Button>
-        <NuxtLink to="/auth" class="text-sm text-blue-600 hover:underline">Sign in</NuxtLink>
+        </button>
+        <NuxtLink :to="routes.login" class="text-sm text-primary hover:opacity-70 transition-opacity duration-200">Sign in</NuxtLink>
       </div>
     </form>
   </div>
@@ -76,8 +82,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Typography, Button } from '~/shared/ui'
 import { useRegister } from '../model/use-register'
+import { routes } from '~/shared/constants/routes'
 
 const name = ref('')
 const surname = ref('')
@@ -86,20 +92,16 @@ const password = ref('')
 const confirmPassword = ref('')
 const validationError = ref('')
 
-// Используем composable для управления регистрацией
 const { register, isPending, error } = useRegister()
 
 const handleSubmit = () => {
-  // Очищаем предыдущую ошибку валидации
   validationError.value = ''
   
-  // Проверяем совпадение паролей
   if (password.value !== confirmPassword.value) {
     validationError.value = 'Passwords do not match'
     return
   }
 
-  // Отправляем данные регистрации
   register({
     name: name.value,
     surname: surname.value,

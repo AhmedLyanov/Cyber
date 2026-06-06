@@ -9,7 +9,7 @@ export const routes = {
   catalog: '/catalog',
   auth: '/auth',
   login: '/auth/login',
-  register: '/register'
+  register: '/auth/register'
 } as const;
 
 export type Routes = typeof routes;
