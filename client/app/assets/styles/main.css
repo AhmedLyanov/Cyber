@@ -35,6 +35,12 @@
 
   --color-catalog-length: #6C6C6C;
   --color-dropdown-color: #B5B5B5;
+  --color-dropdown-border: #D4D4D4;
+
+
+  --color-filters-color: #B5B5B5;
+  --color-filters-input-color: #D3D3D3;
+  --color-filters-count: #929292;
 
   --color-footer-bg: #000000;
   --color-footer-text: #CFCFCF;

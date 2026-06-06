@@ -18,13 +18,10 @@
         text-sm
         font-medium
         border
-        border-gray-300
+        border-dropdown-border
         rounded-md
-        hover:bg-gray-50
+        cursor-pointer
         focus:outline-none
-        focus:ring-2
-        focus:ring-gray-400
-        focus:ring-offset-2
         transition-all
         duration-150
       "
@@ -34,6 +31,7 @@
           text-[14px]
           leading-5
           font-medium
+          text-primary
           truncate
         "
       >
@@ -45,7 +43,7 @@
         class="
           w-3
           h-[7px]
-          text-gray-500
+          text-primary
           flex-shrink-0
           transition-transform
           duration-150
@@ -65,7 +63,7 @@
           py-1
           bg-white
           border
-          border-gray-300
+          border-dropdown-border
           rounded-md
           shadow-lg
           overflow-hidden
@@ -81,13 +79,13 @@
             py-2
             text-left
             text-sm
-            text-gray-700
-            hover:bg-gray-100
+            text-primary
+            hover:bg-input
             transition-colors
             duration-100
           "
           :class="{
-            'bg-gray-100 text-gray-900 font-medium':
+            'bg-input text-primary font-medium':
               selectedItem === item
           }"
           @click="selectItem(item)"

@@ -3,7 +3,6 @@
     <Breadcrumbs :items="breadcrumbItems" />
 
     <div class="flex gap-8 px-40 pt-6 pb-14">
-      <!-- Sidebar -->
       <aside class="w-[256px] flex-shrink-0">
         <FilterAccordion
           title="Brand"
@@ -37,12 +36,11 @@
         />
       </aside>
 
-      <!-- Content -->
       <main class="flex-1">
         <div class="flex items-center justify-between mb-4">
           <div>
             <span
-              class="text-[16px] leading-4 text-catalog-length font-medium"
+              class="text-[16px] leading-4 text-catalog-length font-regular"
             >
               Selected Products:
             </span>

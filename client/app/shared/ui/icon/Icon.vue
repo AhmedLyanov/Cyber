@@ -1,10 +1,5 @@
 <template>
-    <img 
-        :src="iconSrc" 
-        :alt="name"
-        class="icon"
-        :class="sizeClass"
-    />
+    <img :src="iconSrc" :alt="name" class="icon" :class="sizeClass" />
 </template>
 
 <script lang="ts" setup>
@@ -21,12 +16,25 @@ import ArrowRight from '~/assets/images/arrow_right.svg'
 import HeartIcon from '~/assets/images/favourite.svg'
 import FilterArrow from '~/assets/images/Filter-arrow.svg'
 import BreadcrumbArrow from '~/assets/images/Breadcrumb-arrow.svg'
+import SearchIcon from '~/assets/images/Search.svg'
 
 interface Props {
-    name: 'computers' | 'phones' | 'gaming' | 'headphones' | 'cameras' | 'smart-watches' | 'arrow-left' | 'arrow-right' | 'favourite' | 'filter-arrow' | 'breadcrumb-arrow';
+    name:
+    | 'computers'
+    | 'phones'
+    | 'gaming'
+    | 'headphones'
+    | 'cameras'
+    | 'smart-watches'
+    | 'arrow-left'
+    | 'arrow-right'
+    | 'favourite'
+    | 'filter-arrow'
+    | 'breadcrumb-arrow'
+    | 'search'
+
     size?: 'sm' | 'md' | 'lg'
 }
-
 const props = withDefaults(defineProps<Props>(), {
     size: 'md'
 })
@@ -43,7 +51,8 @@ const iconSrc = computed(() => {
         'arrow-right': ArrowRight,
         favourite: HeartIcon,
         'filter-arrow': FilterArrow,
-        'breadcrumb-arrow': BreadcrumbArrow
+        'breadcrumb-arrow': BreadcrumbArrow,
+        search: SearchIcon
     }
     return icons[props.name]
 })
