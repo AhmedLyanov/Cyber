@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Typography, Button, Icon } from "~/shared/ui"
+import { Typography, Icon } from "~/shared/ui"
 import CategoryCard from "./ui/category-card.vue"
 
 const categories = [

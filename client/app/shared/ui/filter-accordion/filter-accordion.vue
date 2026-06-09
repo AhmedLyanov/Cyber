@@ -1,5 +1,5 @@
 <template>
-    <div class="pb-2">
+    <div class="pb-6">
         <button class="
         w-full
         flex

@@ -4,6 +4,9 @@ export type TypographyVariant =
   | "h2"
   | "h2Hero"
   | "h3"
+  | "titleLg"
+  | "priceLg"
+  | "description"
   | "body"
   | "bodySm"
   | "bodyLg"
@@ -30,11 +33,20 @@ const variants: Record<TypographyVariant, string> = {
 
   h3: "text-2xl",
 
+  titleLg: "font-bold text-[40px] leading-[40px]",
+
+  priceLg:
+    "font-medium text-[32px] leading-[48px] tracking-[0.03em]",
+
+  description:
+    "font-normal text-[14px] leading-[24px] tracking-[0.03em] text-gray",
+
   body: "text-base",
 
   bodySm: "text-sm leading-6 text-gray",
 
   bodyLg: "text-[18px] leading-7 text-gray",
+
   navigation:
     "text-base transition-opacity duration-200 hover:opacity-70",
 

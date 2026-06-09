@@ -17,6 +17,18 @@ import HeartIcon from '~/assets/images/favourite.svg'
 import FilterArrow from '~/assets/images/Filter-arrow.svg'
 import BreadcrumbArrow from '~/assets/images/Breadcrumb-arrow.svg'
 import SearchIcon from '~/assets/images/Search.svg'
+import ExpandArrowDown from "~/assets/images/Expand-down-light.svg"
+import AccountIcon from '~/assets/images/Account.svg'
+import BatteryLogoIcon from '~/assets/images/battery-logo.svg'
+import CartIcon from '~/assets/images/Cart.svg'
+import CoreLogoIcon from '~/assets/images/core-logo.svg'
+import FavouritesIcon from '~/assets/images/Favourites.svg'
+import LogoCPU from '~/assets/images/logo-cpu.svg'
+import ProductCameraLogo from '~/assets/images/product-camera-logo.svg'
+import ProductCameraRotate from '~/assets/images/product-camera-rotate.svg'
+import ScreenSizeLogo from '~/assets/images/Screen-size-logo.svg'
+import Star from '~/assets/images/Star.svg'
+import Star_half from '~/assets/images/Star-half.svg'
 
 interface Props {
     name:
@@ -29,12 +41,25 @@ interface Props {
     | 'arrow-left'
     | 'arrow-right'
     | 'favourite'
+    | 'star'
+    | 'star_half'
     | 'filter-arrow'
     | 'breadcrumb-arrow'
     | 'search'
+    | 'expand-arrow-down'
+    | 'account'
+    | 'battery-logo'
+    | 'cart'
+    | 'core-logo'
+    | 'favourites'
+    | 'logo-cpu'
+    | 'product-camera-logo'
+    | 'product-camera-rotate'
+    | 'screen-size-logo'
 
     size?: 'sm' | 'md' | 'lg'
 }
+
 const props = withDefaults(defineProps<Props>(), {
     size: 'md'
 })
@@ -49,10 +74,22 @@ const iconSrc = computed(() => {
         'smart-watches': SmartWatchesIcon,
         'arrow-left': ArrowLeft,
         'arrow-right': ArrowRight,
+        'expand-arrow-down': ExpandArrowDown,
+        star: Star,
+        'star-half': Star_half,
         favourite: HeartIcon,
         'filter-arrow': FilterArrow,
         'breadcrumb-arrow': BreadcrumbArrow,
-        search: SearchIcon
+        search: SearchIcon,
+        account: AccountIcon,
+        'battery-logo': BatteryLogoIcon,
+        cart: CartIcon,
+        'core-logo': CoreLogoIcon,
+        favourites: FavouritesIcon,
+        'logo-cpu': LogoCPU,
+        'product-camera-logo': ProductCameraLogo,
+        'product-camera-rotate': ProductCameraRotate,
+        'screen-size-logo': ScreenSizeLogo
     }
     return icons[props.name]
 })

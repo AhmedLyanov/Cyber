@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @import "tailwindcss";
@@ -25,7 +24,7 @@
   --color-category-background: #FAFAFA;
   --color-category-card: #EDEDED;
 
-  --color-product-color: #F6F6F6; 
+  --color-product-color: #F6F6F6;
 
   --color-product-most-white: #FFFFFF;
   --color-product-most-gray: #EAEAEA;
@@ -41,6 +40,31 @@
   --color-filters-color: #B5B5B5;
   --color-filters-input-color: #D3D3D3;
   --color-filters-count: #929292;
+
+  --color-product-card-gb-noactive: #D5D5D5;
+  --color-product-card-gb-active: #000000;
+  --color-product-card-gb-text-noactive: #6F6F6F;
+  --color-product-card-gb-text-active: #000000;
+
+  --color-product-black: #000000;
+  --color-product-purple: #781DBC;
+  --color-product-red: #E10000;
+  --color-product-gold: #E1B000;
+  --color-product-silver: #E8E8E8;
+
+  --color-product-attributes: #F4F4F4;
+
+  --color-product-details-bg: #FAFAFA;
+  --color-product-details-window-bg: #FFFFFF;
+  --color-product-details-border: #CDCDCD;
+
+  --color-product-reviews-rating: #FAFAFA;
+  --color-product-reviews-rating-empty: #D9D9D9;
+  --color-product-reviews-rating-fill: #FFB547;
+  --color-product-reviews-comment-bg: #FAFAFA;
+  --color-product-reviews-input: #CECECE;
+
+
 
   --color-footer-bg: #000000;
   --color-footer-text: #CFCFCF;
@@ -163,6 +187,7 @@
     @apply border-border outline-ring/50;
 
   }
+
   body {
     @apply bg-background text-foreground;
 

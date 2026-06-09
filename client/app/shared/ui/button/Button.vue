@@ -3,16 +3,18 @@ type ButtonVariant =
   | "primary"
   | "secondary"
   | "outline"
-  | "ghost";
+  | "option";
 
 interface Props {
   variant?: ButtonVariant;
   disabled?: boolean;
+  selected?: boolean;
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   variant: "primary",
   disabled: false,
+  selected: false,
 });
 
 const variants: Record<ButtonVariant, string> = {
@@ -24,15 +26,22 @@ const variants: Record<ButtonVariant, string> = {
 
   outline:
     "w-[184px] border border-current bg-transparent hover:bg-black hover:text-white",
+
+  option:
+    "w-[122px] h-[56px] border border-product-card-gb-noactive bg-transparent text-product-card-gb-text-noactive hover:border-product-card-gb-active hover:text-product-card-gb-text-active",
 };
 </script>
 
 <template>
   <button
     :disabled="disabled"
-    class="inline-flex items-center justify-center rounded-md px-6 py-3 font-medium transition-all duration-200 cursor-pointer w-[184px]"
+    class="inline-flex items-center justify-center rounded-md px-6 py-3 font-medium transition-all duration-200 cursor-pointer"
     :class="[
       variants[variant],
+
+      variant === 'option' && selected &&
+        'border-product-card-gb-active text-product-card-gb-text-active',
+
       disabled && 'opacity-50 cursor-not-allowed'
     ]"
   >
