@@ -4,7 +4,7 @@ export const routes = {
   contact: '/contact',
   blog: '/blog',
   favourites: '/favourites',
-  cart: '/cart',
+  cart: '/shopping-cart',
   account: '/account',
   catalog: '/catalog',
   auth: '/auth',

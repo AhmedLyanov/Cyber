@@ -25,7 +25,7 @@ const variants: Record<ButtonVariant, string> = {
     "bg-black text-white hover:opacity-90",
 
   outline:
-    "w-[184px] border border-current bg-transparent hover:bg-black hover:text-white",
+    "border border-current bg-transparent hover:bg-black hover:text-white",
 
   option:
     "w-[122px] h-[56px] border border-product-card-gb-noactive bg-transparent text-product-card-gb-text-noactive hover:border-product-card-gb-active hover:text-product-card-gb-text-active",

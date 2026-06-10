@@ -64,8 +64,9 @@ withDefaults(defineProps<Props>(), {
     <Button
       v-if="showButton"
       variant="outline"
+      class="w-46"
       :class="{
-        'border-white text-white hover:bg-white hover:text-black': dark,
+        ' border-white text-white hover:bg-white hover:text-black': dark,
       }"
     >
       {{ buttonText || "Shop Now" }}

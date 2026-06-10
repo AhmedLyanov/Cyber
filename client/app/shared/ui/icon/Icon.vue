@@ -29,6 +29,9 @@ import ProductCameraRotate from '~/assets/images/product-camera-rotate.svg'
 import ScreenSizeLogo from '~/assets/images/Screen-size-logo.svg'
 import Star from '~/assets/images/Star.svg'
 import Star_half from '~/assets/images/Star-half.svg'
+import Close_Cart from "~/assets/images/Close-cart.svg"
+import Edit from "~/assets/images/Edit.svg"
+import NoEdit from "~/assets/images/NoEdit.svg"
 
 interface Props {
     name:
@@ -43,6 +46,7 @@ interface Props {
     | 'favourite'
     | 'star'
     | 'star_half'
+    | "close_cart"
     | 'filter-arrow'
     | 'breadcrumb-arrow'
     | 'search'
@@ -56,6 +60,8 @@ interface Props {
     | 'product-camera-logo'
     | 'product-camera-rotate'
     | 'screen-size-logo'
+    | 'edit'
+    | 'noedit'
 
     size?: 'sm' | 'md' | 'lg'
 }
@@ -77,6 +83,7 @@ const iconSrc = computed(() => {
         'expand-arrow-down': ExpandArrowDown,
         star: Star,
         'star-half': Star_half,
+        'close_cart': Close_Cart,
         favourite: HeartIcon,
         'filter-arrow': FilterArrow,
         'breadcrumb-arrow': BreadcrumbArrow,
@@ -89,7 +96,9 @@ const iconSrc = computed(() => {
         'logo-cpu': LogoCPU,
         'product-camera-logo': ProductCameraLogo,
         'product-camera-rotate': ProductCameraRotate,
-        'screen-size-logo': ScreenSizeLogo
+        'screen-size-logo': ScreenSizeLogo,
+        edit: Edit,
+        noedit: NoEdit
     }
     return icons[props.name]
 })
