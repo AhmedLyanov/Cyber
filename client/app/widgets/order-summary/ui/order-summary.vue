@@ -14,7 +14,7 @@ import { Typography, Input, Button } from "~/shared/ui";
             <div class="relative">
                 <Input variant="cart" placeholder="Enter Card Number" label="Your bonus card number" />
 
-                <Button class="absolute right-4 bottom-4 min-w-[76px] h-8" variant="outline">
+                <Button class="rounded-[6px] absolute right-4 bottom-4 min-w-[76px] h-8" variant="outline">
                     Apply
                 </Button>
             </div>
@@ -61,7 +61,7 @@ import { Typography, Input, Button } from "~/shared/ui";
             </div>
         </div>
 
-        <Button class="mt-12  py-4 w-full" variant="primary">
+        <Button class="mt-12 py-4 w-full" variant="primary">
             Checkout
         </Button>
     </div>

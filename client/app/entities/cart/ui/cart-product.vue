@@ -1,6 +1,7 @@
 <template>
   <div class="w-full flex items-center justify-between py-10">
-<div class="flex flex-1 items-center gap-6">      <img src="/images/IPad.png" :alt="title" class="h-22.5 w-22.5 object-contain" />
+    <div class="flex flex-1 items-center gap-6"> <img src="/images/IPad.png" :alt="title"
+        class="h-22.5 w-22.5 object-contain" />
 
       <div class="grid gap-2">
         <Typography variant="cartTitle">
@@ -23,7 +24,6 @@
 
         <button class="text-4xl">
           <Icon name="edit" size="md" />
-
         </button>
       </div>
 
@@ -34,7 +34,7 @@
       </div>
 
       <button>
-        <Icon name="close_cart" size="md" />
+        <Icon name="delete_card" size="md" />
       </button>
     </div>
   </div>

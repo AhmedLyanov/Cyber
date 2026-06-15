@@ -17,5 +17,5 @@ export default defineNuxtConfig({
     },
   },
 
-  plugins: ['~/plugins/query-client.ts'],
+  plugins: ['~/shared/plugins/query-client.ts'],
 })

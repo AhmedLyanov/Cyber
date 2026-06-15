@@ -29,7 +29,7 @@ import ProductCameraRotate from '~/assets/images/product-camera-rotate.svg'
 import ScreenSizeLogo from '~/assets/images/Screen-size-logo.svg'
 import Star from '~/assets/images/Star.svg'
 import Star_half from '~/assets/images/Star-half.svg'
-import Close_Cart from "~/assets/images/Close-cart.svg"
+import Delete_card from "~/assets/images/Close-cart.svg"
 import Edit from "~/assets/images/Edit.svg"
 import NoEdit from "~/assets/images/NoEdit.svg"
 
@@ -46,7 +46,7 @@ interface Props {
     | 'favourite'
     | 'star'
     | 'star_half'
-    | "close_cart"
+    | "delete_card"
     | 'filter-arrow'
     | 'breadcrumb-arrow'
     | 'search'
@@ -83,7 +83,7 @@ const iconSrc = computed(() => {
         'expand-arrow-down': ExpandArrowDown,
         star: Star,
         'star-half': Star_half,
-        'close_cart': Close_Cart,
+        'delete_card': Delete_card,
         favourite: HeartIcon,
         'filter-arrow': FilterArrow,
         'breadcrumb-arrow': BreadcrumbArrow,
