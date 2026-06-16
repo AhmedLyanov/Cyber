@@ -10,22 +10,33 @@
         </Typography>
       </div>
       <div class="flex gap-3">
-        <Button variant="outline" @click="saveDraft">
+        <Button 
+          variant="outline" 
+          @click="saveDraft"
+          :disabled="isLoading"
+        >
           <Icon name="save" size="sm" class="mr-1" />
           Save draft
         </Button>
-        <Button variant="primary" @click="submitForm">
+        <Button 
+          variant="primary" 
+          @click="submitForm"
+          :loading="isLoading"
+          :disabled="isLoading"
+        >
           <Icon name="plus" size="sm" class="mr-1" />
-          Publish product
+          {{ isLoading ? 'Creating...' : 'Publish product' }}
         </Button>
       </div>
     </div>
-
-    <!-- Форма -->
-    <div class="flex flex-col lg:flex-row gap-8">
-      <!-- Левая колонка -->
+    <div v-if="error" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+      {{ error }}
+    </div>
+    <div v-if="successMessage" class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
+      {{ successMessage }}
+    </div>
+    <form @submit.prevent="submitForm" class="flex flex-col lg:flex-row gap-8">
       <div class="flex-1 space-y-6">
-        <!-- Загрузка изображения -->
         <div class="bg-white rounded-lg border border-gray-100 p-6 shadow-sm">
           <div class="flex items-center justify-between mb-4">
             <Typography variant="h3" class="text-lg font-semibold">
@@ -53,8 +64,9 @@
                 >
                 <Button 
                   variant="outline" 
-                  @click="$refs.fileInput.click()" 
+                  @click="() => fileInput?.click()" 
                   class="mt-2 w-full sm:w-auto"
+                  :disabled="isLoading"
                 >
                   <Icon name="upload" size="sm" class="mr-1" />
                   Choose file
@@ -63,11 +75,12 @@
               <Typography variant="caption" class="text-gray-400">
                 Recommended: PNG, JPG up to 5MB
               </Typography>
+              <p v-if="imageFile" class="text-xs text-green-600">
+                Selected: {{ imageFile.name }}
+              </p>
             </div>
           </div>
         </div>
-
-        <!-- Основная информация -->
         <div class="bg-white rounded-lg border border-gray-100 p-6 shadow-sm space-y-5">
           <Typography variant="h3" class="text-lg font-semibold border-b border-gray-100 pb-2">
             General information
@@ -80,6 +93,7 @@
               type="text" 
               class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-gray-400 focus:ring-1 focus:ring-black/5 outline-none transition"
               placeholder="Apple iPhone 14 Pro Max 128GB Deep Purple"
+              :disabled="isLoading"
             >
           </div>
 
@@ -90,29 +104,35 @@
               rows="4" 
               class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:border-gray-400 focus:ring-1 focus:ring-black/5 outline-none resize-none"
               placeholder="Detailed product description..."
+              :disabled="isLoading"
             ></textarea>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Type *</label>
-              <select v-model="form.type" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white">
+              <select 
+                v-model="form.type" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white"
+                :disabled="isLoading"
+              >
                 <option value="">Select type</option>
-                <option value="smartphone">Smartphone</option>
-                <option value="tablet">Tablet</option>
-                <option value="laptop">Laptop</option>
-                <option value="accessory">Accessory</option>
+                <option v-for="type in PRODUCT_TYPES" :key="type" :value="type">
+                  {{ type.charAt(0).toUpperCase() + type.slice(1) }}
+                </option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Brand *</label>
-              <select v-model="form.brand" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white">
+              <select 
+                v-model="form.brand" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white"
+                :disabled="isLoading"
+              >
                 <option value="">Select brand</option>
-                <option value="Apple">Apple</option>
-                <option value="Samsung">Samsung</option>
-                <option value="Xiaomi">Xiaomi</option>
-                <option value="Google">Google</option>
-                <option value="OnePlus">OnePlus</option>
+                <option v-for="brand in PRODUCT_BRANDS" :key="brand" :value="brand">
+                  {{ brand }}
+                </option>
               </select>
             </div>
           </div>
@@ -120,17 +140,27 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Price (USD) *</label>
-              <input v-model.number="form.price" type="number" step="0.01" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm">
+              <input 
+                v-model.number="form.price" 
+                type="number" 
+                step="0.01" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm"
+                :disabled="isLoading"
+              >
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Original price</label>
-              <input v-model.number="form.originalPrice" type="number" step="0.01" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm">
+              <input 
+                v-model.number="form.originalPrice" 
+                type="number" 
+                step="0.01" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm"
+                :disabled="isLoading"
+              >
               <Typography variant="caption" class="text-gray-400">If discount applied</Typography>
             </div>
           </div>
         </div>
-
-        <!-- Дисконт аккордеон -->
         <div class="bg-white rounded-lg border border-gray-100 p-6 shadow-sm">
           <div class="flex items-center justify-between cursor-pointer" @click="toggleDiscount">
             <Typography variant="h3" class="text-lg font-semibold">
@@ -147,15 +177,33 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700">Discount %</label>
-                <input v-model.number="form.discountPercentage" type="number" step="1" min="0" max="99" class="w-full border border-gray-200 rounded-lg px-4 py-2 text-sm">
+                <input 
+                  v-model.number="form.discountPercentage" 
+                  type="number" 
+                  step="1" 
+                  min="0" 
+                  max="99" 
+                  class="w-full border border-gray-200 rounded-lg px-4 py-2 text-sm"
+                  :disabled="isLoading"
+                >
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700">Start date</label>
-                <input v-model="form.discountStart" type="datetime-local" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
+                <input 
+                  v-model="form.discountStart" 
+                  type="datetime-local" 
+                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                  :disabled="isLoading"
+                >
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700">End date</label>
-                <input v-model="form.discountEnd" type="datetime-local" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm">
+                <input 
+                  v-model="form.discountEnd" 
+                  type="datetime-local" 
+                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                  :disabled="isLoading"
+                >
               </div>
             </div>
             <div class="bg-gray-50 p-2 rounded-md">
@@ -165,8 +213,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Спецификации -->
         <div class="bg-white rounded-lg border border-gray-100 p-6 shadow-sm space-y-5">
           <Typography variant="h3" class="text-lg font-semibold border-b border-gray-100 pb-2">
             Technical specifications
@@ -175,68 +221,85 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Screen type</label>
-              <select v-model="form.specs.screenType" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white">
+              <select 
+                v-model="form.specs.screenType" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white"
+                :disabled="isLoading"
+              >
                 <option value="">Not specified</option>
-                <option value="AMOLED">AMOLED</option>
-                <option value="OLED">OLED</option>
-                <option value="IPS">IPS</option>
-                <option value="Retina">Retina</option>
+                <option v-for="type in SCREEN_TYPES" :key="type" :value="type">
+                  {{ type }}
+                </option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Screen diagonal</label>
-              <select v-model="form.specs.screenDiagonal" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white">
+              <select 
+                v-model="form.specs.screenDiagonal" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white"
+                :disabled="isLoading"
+              >
                 <option value="">Not specified</option>
-                <option value="6.1\">6.1"</option>
-                <option value="6.5\">6.5"</option>
-                <option value="6.7\">6.7"</option>
-                <option value="6.9\">6.9"</option>
+                <option v-for="diag in SCREEN_DIAGONALS" :key="diag" :value="diag">
+                  {{ diag }}
+                </option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Battery capacity</label>
-              <select v-model="form.specs.batteryCapacity" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white">
+              <select 
+                v-model="form.specs.batteryCapacity" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white"
+                :disabled="isLoading"
+              >
                 <option value="">Not specified</option>
-                <option value="3000mAh">3000mAh</option>
-                <option value="4000mAh">4000mAh</option>
-                <option value="5000mAh">5000mAh</option>
-                <option value="6000mAh">6000mAh</option>
+                <option v-for="cap in BATTERY_CAPACITIES" :key="cap" :value="cap">
+                  {{ cap }}
+                </option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Built-in memory</label>
-              <select v-model="form.specs.builtInMemory" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white">
+              <select 
+                v-model="form.specs.builtInMemory" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white"
+                :disabled="isLoading"
+              >
                 <option value="">Not specified</option>
-                <option value="64GB">64GB</option>
-                <option value="128GB">128GB</option>
-                <option value="256GB">256GB</option>
-                <option value="512GB">512GB</option>
+                <option v-for="mem in BUILT_IN_MEMORIES" :key="mem" :value="mem">
+                  {{ mem }}
+                </option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Protection class</label>
-              <select v-model="form.specs.protectionClass" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white">
+              <select 
+                v-model="form.specs.protectionClass" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white"
+                :disabled="isLoading"
+              >
                 <option value="">Not specified</option>
-                <option value="IP67">IP67</option>
-                <option value="IP68">IP68</option>
-                <option value="IP69">IP69</option>
+                <option v-for="prot in PROTECTION_CLASSES" :key="prot" :value="prot">
+                  {{ prot }}
+                </option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">CPU / Processor</label>
-              <select v-model="form.specs.cpu" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white">
+              <select 
+                v-model="form.specs.cpu" 
+                class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white"
+                :disabled="isLoading"
+              >
                 <option value="">Not specified</option>
-                <option value="A16 Bionic">A16 Bionic</option>
-                <option value="Snapdragon 8 Gen 2">Snapdragon 8 Gen 2</option>
-                <option value="Dimensity 9200">Dimensity 9200</option>
-                <option value="Apple M2">Apple M2</option>
+                <option v-for="cpu in CPU_TYPES" :key="cpu" :value="cpu">
+                  {{ cpu }}
+                </option>
               </select>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Правая колонка - Preview -->
       <div class="lg:w-96 space-y-6">
         <div class="bg-white rounded-lg border border-gray-100 p-5 shadow-sm sticky top-6">
           <Typography variant="h3" class="text-md font-semibold mb-3 flex items-center gap-2">
@@ -245,7 +308,6 @@
           </Typography>
           
           <div class="border-t border-gray-100 pt-4">
-            <!-- Карточка товара -->
             <div class="w-full bg-white rounded-lg border border-gray-100 p-5 flex flex-col items-center">
               <div class="w-full flex items-center justify-end">
                 <Icon name="favourite" size="lg" class="text-gray-400 hover:text-red-500 cursor-pointer" />
@@ -287,58 +349,42 @@
               </div>
             </div>
           </div>
-
-          <div class="mt-5 p-3 bg-gray-50 rounded-lg">
-            <div class="flex justify-between mb-1 text-xs">
-              <span class="text-gray-500">Type:</span>
-              <span class="text-gray-700">{{ form.type || '—' }}</span>
-            </div>
-            <div class="flex justify-between mb-1 text-xs">
-              <span class="text-gray-500">Brand:</span>
-              <span class="text-gray-700">{{ form.brand || '—' }}</span>
-            </div>
-            <div class="flex justify-between text-xs">
-              <span class="text-gray-500">Specs:</span>
-              <span class="text-gray-700 truncate">{{ specsSummary || 'Not added' }}</span>
-            </div>
-          </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { Typography, Button, Icon, Breadcrumbs } from '~/shared/ui'
+import { useCreateProduct } from '~/features/create-product/model/use-create-product'
+import {
+  PRODUCT_TYPES,
+  PRODUCT_BRANDS,
+  SCREEN_TYPES,
+  SCREEN_DIAGONALS,
+  BATTERY_CAPACITIES,
+  BUILT_IN_MEMORIES,
+  PROTECTION_CLASSES,
+  CPU_TYPES,
+  type ProductType,
+  type ProductBrand,
+} from '~/features/create-product/model/types'
 
-interface ProductForm {
-  title: string
-  description: string
-  price: number | null
-  type: string
-  brand: string
-  originalPrice: number | null
-  discountPercentage: number
-  discountStart: string
-  discountEnd: string
-  specs: {
-    screenType: string
-    screenDiagonal: string
-    batteryCapacity: string
-    builtInMemory: string
-    protectionClass: string
-    cpu: string
-  }
-}
+const breadcrumbItems = [
+  { label: 'Home', to: '/' },
+  { label: 'Admin', to: '/admin' },
+  { label: 'Create Product' },
+]
 
-const form = reactive<ProductForm>({
+const form = reactive({
   title: '',
   description: '',
-  price: null,
-  type: '',
-  brand: '',
-  originalPrice: null,
+  price: null as number | null,
+  type: '' as ProductType | '',
+  brand: '' as ProductBrand | '',
+  originalPrice: null as number | null,
   discountPercentage: 0,
   discountStart: '',
   discountEnd: '',
@@ -348,13 +394,16 @@ const form = reactive<ProductForm>({
     batteryCapacity: '',
     builtInMemory: '',
     protectionClass: '',
-    cpu: ''
-  }
+    cpu: '',
+  },
 })
 
+const imageFile = ref<File | null>(null)
 const imagePreview = ref<string>('')
 const fileInput = ref<HTMLInputElement>()
 const discountOpen = ref(false)
+const successMessage = ref('')
+const { isLoading, error, createProduct, resetState } = useCreateProduct()
 
 const finalPrice = computed(() => {
   let price = form.price || 0
@@ -390,6 +439,7 @@ const handleImageUpload = (event: Event) => {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
   if (file) {
+    imageFile.value = file
     const reader = new FileReader()
     reader.onload = (e) => {
       imagePreview.value = e.target?.result as string
@@ -407,22 +457,73 @@ const saveDraft = () => {
 }
 
 const submitForm = async () => {
-  const productData = {
-    title: form.title,
-    description: form.description,
-    price: form.price,
-    type: form.type,
-    brand: form.brand,
-    originalPrice: form.originalPrice || form.price,
-    discountPercentage: form.discountPercentage,
-    discountStart: form.discountStart || null,
-    discountEnd: form.discountEnd || null,
-    specs: Object.fromEntries(
-      Object.entries(form.specs).filter(([_, value]) => value)
-    )
+  successMessage.value = ''
+  
+  const formData = new FormData()
+  
+  formData.append('title', form.title)
+  formData.append('description', form.description || '')
+  formData.append('price', String(form.price))
+  formData.append('type', form.type)
+  formData.append('brand', form.brand)
+  
+  if (form.originalPrice) {
+    formData.append('originalPrice', String(form.originalPrice))
   }
   
-  console.log('Submitting product:', productData)
+  formData.append('discountPercentage', String(form.discountPercentage || 0))
+  
+  if (form.discountStart) {
+    formData.append('discountStart', form.discountStart)
+  }
+  if (form.discountEnd) {
+    formData.append('discountEnd', form.discountEnd)
+  }
+
+  Object.entries(form.specs).forEach(([key, value]) => {
+    if (value) {
+      formData.append(key, value)
+    }
+  })
+
+  if (imageFile.value) {
+    formData.append('image', imageFile.value)
+  }
+
+  try {
+    const response = await createProduct(formData)
+    successMessage.value = `Product "${response.product?.title || form.title}" created successfully!`
+    
+    setTimeout(() => {
+      resetForm()
+    }, 3000)
+  } catch (err) {
+    console.error('Failed to create product:', err)
+  }
+}
+
+const resetForm = () => {
+  form.title = ''
+  form.description = ''
+  form.price = null
+  form.type = ''
+  form.brand = ''
+  form.originalPrice = null
+  form.discountPercentage = 0
+  form.discountStart = ''
+  form.discountEnd = ''
+  form.specs = {
+    screenType: '',
+    screenDiagonal: '',
+    batteryCapacity: '',
+    builtInMemory: '',
+    protectionClass: '',
+    cpu: '',
+  }
+  imageFile.value = null
+  imagePreview.value = ''
+  successMessage.value = ''
+  resetState()
 }
 </script>
 
@@ -453,12 +554,10 @@ const submitForm = async () => {
   }
 }
 
-/* Анимация для аккордеона */
 .rotate-180 {
   transform: rotate(180deg);
 }
 
-/* Стили для инпутов при фокусе */
 input:focus, 
 textarea:focus, 
 select:focus {
@@ -467,7 +566,6 @@ select:focus {
   ring: 2px solid rgba(0, 0, 0, 0.05);
 }
 
-/* Кастомные стили для скролла */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -487,18 +585,11 @@ select:focus {
   background-color: #9ca3af;
 }
 
-/* Убираем стрелки у number input */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button {
   opacity: 0.5;
 }
 
-/* Стили для карточки товара */
-.bg-product-color {
-  background-color: #ffffff;
-}
-
-/* Тени и переходы */
 .shadow-sm {
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 }

@@ -3,6 +3,7 @@ import { body, param, query, validationResult } from "express-validator";
 import productController from "../controller/product.controller.js";
 import authMiddleware from "../middleware/auth.js";
 import rateManager from "../middleware/rateLimit.js";
+import { normalizeBody } from '../middleware/normalizeBody.js';
 import { uploadSingle } from "../middleware/uploadRules.js";
 import { PRODUCT_TYPES } from "../constants/productTypes.js";
 import { checkOwnerProduct } from "../middleware/ownership.js";
@@ -47,6 +48,8 @@ productRoutes.post(
   "/create",
   rateManager.getUploadFilesLimiter(),
   authMiddleware,
+    normalizeBody,
+
   uploadSingle,
   body("title")
     .isString()

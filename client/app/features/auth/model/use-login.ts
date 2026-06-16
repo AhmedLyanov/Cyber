@@ -14,16 +14,16 @@ export const useLogin = () => {
   const loginMutation = useMutation({
     mutationFn: (data: LoginDto) => authApi.login(data),
     onSuccess: (response: AuthResponse) => {
-      authToken.value = response.token
-      if (process.client) {
-        localStorage.setItem('user', JSON.stringify(response.user))
-      }
-      router.push('/')
+      authToken.value = response.token;
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+      
+      router.push('/');
     },
     onError: (error: any) => {
-      console.error('Login failed:', error)
+      console.error('Login failed:', error);
     },
-  })
+  });
 
   return {
     login: (data: LoginDto) => loginMutation.mutate(data),
@@ -33,5 +33,5 @@ export const useLogin = () => {
     data: loginMutation.data,
     error: loginMutation.error,
     token: authToken,
-  }
-}
+  };
+};

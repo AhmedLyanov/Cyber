@@ -4,27 +4,31 @@ import type {
   AuthResponse,
   ProfileResponse,
 } from "../model/types";
+import { useApi } from "~/shared/core/client";
 
 export const authApi = {
   async login(data: LoginDto): Promise<AuthResponse> {
-    const config = useRuntimeConfig();
-    return $fetch(`${config.public.apiBase}/auth/login`, {
+    const api = useApi();
+
+    return api("/auth/login", {
       method: "POST",
       body: data,
     });
   },
+
   async register(data: RegisterDto): Promise<AuthResponse> {
-    const config = useRuntimeConfig();
-    return $fetch(`${config.public.apiBase}/auth/registration`, {
+    const api = useApi();
+
+    return api("/auth/registration", {
       method: "POST",
       body: data,
     });
   },
 
   async profile(token: string): Promise<ProfileResponse> {
-    const config = useRuntimeConfig();
-    return $fetch(`${config.public.apiBase}/auth/profile`, {
-      method: "GET",
+    const api = useApi();
+
+    return api("/auth/profile", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

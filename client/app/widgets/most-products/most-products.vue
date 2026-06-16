@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 
-import MostProductCard from "~/entities/most-product/ui/most-product-card.vue"
+import MostProductCard from "~/widgets/most-product/ui/most-product-card.vue"
 
 const mockProducts = [
     {
