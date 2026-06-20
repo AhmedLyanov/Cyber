@@ -1,11 +1,11 @@
-export type ProductType = 'smartphones' | 'tablets' | 'laptops' | 'accessoryes'
+export type ProductType = 'smartphones' | 'tablets' | 'laptops' | 'accessories'
 export type ProductBrand = 'apple' | 'samsung' | 'xiaomi' | 'google' | 'oneplus'
-export type ScreenType = 'AMOLED' | 'OLED' | 'IPS' | 'Retina'
-export type ScreenDiagonal = '6.1' | '6.5"' | '6.7"' | '6.9"'
-export type BatteryCapacity = '3000mAh' | '4000mAh' | '5000mAh' | '6000mAh'
-export type BuiltInMemory = '64GB' | '128GB' | '256GB' | '512GB'
-export type ProtectionClass = 'IP67' | 'IP68' | 'IP69'
-export type CpuType = 'A16 Bionic' | 'Snapdragon 8 Gen 2' | 'Dimensity 9200' | 'Apple M2'
+export type ScreenType = 'amoled' | 'oled' | 'ips' | 'retina'
+export type ScreenDiagonal = '6.1' | '6.5' | '6.7' | '6.9'
+export type BatteryCapacity = '3000mah' | '4000mah' | '5000mah' | '6000mah'
+export type BuiltInMemory = '64gb' | '128gb' | '256gb' | '512gb'
+export type ProtectionClass = 'ip67' | 'ip68' | 'ip69'
+export type CpuType = 'a16 bionic' | 'snapdragon 8 gen 2' | 'dimensity 9200' | 'apple m2'
 
 export interface ProductSpecs {
   screenType?: ScreenType
@@ -59,11 +59,11 @@ export interface ApiResponse<T = any> {
   [key: string]: any
 }
 
-export const PRODUCT_TYPES: ProductType[] = ['smartphone', 'tablet', 'laptops', 'accessory']
-export const PRODUCT_BRANDS: ProductBrand[] = ['apple', 'samsung', 'Xiaomi', 'Google', 'OnePlus']
-export const SCREEN_TYPES: ScreenType[] = ['AMOLED', 'OLED', 'IPS', 'Retina']
-export const SCREEN_DIAGONALS: ScreenDiagonal[] = ['6.1', '6.5"', '6.7"', '6.9"']
-export const BATTERY_CAPACITIES: BatteryCapacity[] = ['3000mAh', '4000mAh', '5000mAh', '6000mAh']
-export const BUILT_IN_MEMORIES: BuiltInMemory[] = ['64GB', '128GB', '256GB', '512GB']
-export const PROTECTION_CLASSES: ProtectionClass[] = ['IP67', 'IP68', 'IP69']
-export const CPU_TYPES: CpuType[] = ['A16 Bionic', 'Snapdragon 8 Gen 2', 'Dimensity 9200', 'Apple M2']
+export const PRODUCT_TYPES: ProductType[] = ['smartphones', 'tablets', 'laptops', 'accessories']
+export const PRODUCT_BRANDS: ProductBrand[] = ['apple', 'samsung', 'xiaomi', 'google', 'oneplus']
+export const SCREEN_TYPES: ScreenType[] = ['amoled', 'oled', 'ips', 'retina']
+export const SCREEN_DIAGONALS: ScreenDiagonal[] = ['6.1', '6.5', '6.7', '6.9']
+export const BATTERY_CAPACITIES: BatteryCapacity[] = ['3000mah', '4000mah', '5000mah', '6000mah']
+export const BUILT_IN_MEMORIES: BuiltInMemory[] = ['64gb', '128gb', '256gb', '512gb']
+export const PROTECTION_CLASSES: ProtectionClass[] = ['ip67', 'ip68', 'ip69']
+export const CPU_TYPES: CpuType[] = ['a16 bionic', 'snapdragon 8 gen 2', 'dimensity 9200', 'apple m2']

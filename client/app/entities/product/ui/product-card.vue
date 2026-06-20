@@ -3,9 +3,9 @@
         <div class="w-full flex items-center justify-end">
             <Icon name="favourite" size="lg" class="" />
         </div>
-        <div class="w-full h-52 flex items-center justify-center mb-3">
+        <div class="w-40 h-40 flex items-center justify-center mb-3">
             <NuxtImg v-if="props.product.image" :src="`http://localhost:5001/uploads/products/${props.product.image}`"
-                :alt="props.product.title" class="max-w-full max-h-full object-contain" />
+                :alt="props.product.title" class="w-full h-full object-contain" />
 
             <NuxtImg v-else src="/images/image-not-found.png" :alt="props.product.title"
                 class="max-w-full max-h-full object-contain" />
@@ -17,8 +17,7 @@
                     {{ props.product.title }}
                 </Typography>
 
-                <Typography variant="h3" class="mt-4">
-                    ${{ props.product.price }}
+                <Typography variant="h3" class="text-2xl font-bold"> ${{ props.product.price }}
                 </Typography>
             </div>
 
