@@ -5,30 +5,31 @@
             <Typography variant="h4">Bestseller</Typography>
             <Typography variant="h4">Featured Products</Typography>
         </div>
+
         <div class="grid grid-cols-4 gap-4">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            <ProductCard
+                v-for="product in products"
+                :key="product._id"
+                :product="product"
+            />
         </div>
     </div>
 </template>
 
-<script lang="ts">
-import {Typography} from "~/shared/ui"
-import ProductCard from "~/entities/product/ui/product-card.vue"
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
 
-export default {
-    components: {
-        ProductCard
-    }
-}
+import { Typography } from "~/shared/ui";
+import ProductCard from "~/entities/product/ui/product-card.vue";
+
+import { getProducts } from "~/entities/product/api/get-products";
+import type { Product } from "~/entities/product/model/types";
+
+const products = ref<Product[]>([]);
+
+onMounted(async () => {
+    const response = await getProducts();
+
+    products.value = response.products;
+});
 </script>

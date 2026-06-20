@@ -4,21 +4,25 @@
             <Icon name="favourite" size="lg" class="" />
         </div>
         <div class="w-full h-52 flex items-center justify-center mb-3">
-            <NuxtImg src="/images/IPhone.png" alt="Product Image" class="max-w-full max-h-full object-contain" />
+            <NuxtImg v-if="props.product.image" :src="`http://localhost:5001/uploads/products/${props.product.image}`"
+                :alt="props.product.title" class="max-w-full max-h-full object-contain" />
+
+            <NuxtImg v-else src="/images/image-not-found.png" :alt="props.product.title"
+                class="max-w-full max-h-full object-contain" />
         </div>
 
-        <div class="grid gap-6">
+        <div class="flex flex-col flex-1 w-full">
             <div class="text-center">
-                <Typography variant="p" class="text-center mt-2">
-                    Apple iPhone 14 Pro Max 128GB Deep Purple (MQ9T3RX/A)
+                <Typography variant="body" class="text-center mt-2 min-h-14">
+                    {{ props.product.title }}
                 </Typography>
 
                 <Typography variant="h3" class="mt-4">
-                    $999
+                    ${{ props.product.price }}
                 </Typography>
-
             </div>
-            <Button variant="primary" class="w-full">
+
+            <Button variant="primary" class="w-full mt-6">
                 Buy Now
             </Button>
         </div>
@@ -26,5 +30,9 @@
 </template>
 <script setup lang="ts">
 import { Typography, Button, Icon } from '~/shared/ui/'
+import type { Product } from "../model/types";
 
+const props = defineProps<{
+    product: Product;
+}>();
 </script>
