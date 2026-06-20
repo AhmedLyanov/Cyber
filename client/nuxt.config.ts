@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   },
   modules: ['@nuxt/image'],
   css: [
-      '~/assets/styles/main.css'
+      '~/shared/assets/styles/main.css'
   ],
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },

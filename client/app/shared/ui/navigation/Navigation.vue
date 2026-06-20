@@ -30,8 +30,8 @@
 
 <script setup lang="ts">
 import Typography from '~/shared/ui/typography/Typography.vue'
-import FavouritesLogo from '~/assets/images/Favourites.svg'
-import CartLogo from '~/assets/images/Cart.svg'
-import AccountLogo from '~/assets/images/Account.svg'
+import FavouritesLogo from '~/shared/assets/images/Favourites.svg'
+import CartLogo from '~/shared/assets/images/Cart.svg'
+import AccountLogo from '~/shared/assets/images/Account.svg'
 import { routes } from '~/shared/constants'
 </script>
