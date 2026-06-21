@@ -25,7 +25,7 @@
             </span>
 
             <span class="font-medium leading-4 text-[20px] text-primary">
-              {{ products.length }}
+              {{ totalProducts }}
             </span>
           </div>
 
@@ -36,35 +36,63 @@
         <div class="flex flex-wrap gap-4">
           <ProductCard v-for="product in products" :key="product._id" :product="product" />
         </div>
+        <div class="flex justify-center mt-10">
+          <Pagination :current-page="currentPage" :pages="totalPages" @change="changePage" />
+        </div>
       </main>
+
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from "vue";
 
-import ProductCard from '~/entities/product/ui/product-card.vue'
-
+import ProductCard from "~/entities/product/ui/product-card.vue";
 
 import {
   Breadcrumbs,
   Dropdown,
-  FilterAccordion
-} from '~/shared/ui'
+  Pagination,
+  FilterAccordion,
+} from "~/shared/ui";
 
-import { getProducts } from '~/entities/product/api/get-products'
-import type { Product } from '~/entities/product/model/types'
+import { getProducts } from "~/entities/product/api/get-products";
 
-const products = ref<Product[]>([])
+import type {
+  Product,
+} from "~/entities/product/model/types";
 
-const selectedSort = ref(null)
+const products = ref<Product[]>([]);
 
-onMounted(async () => {
-  const response = await getProducts()
+const selectedSort = ref(null);
 
-  products.value = response.products
-})
+const currentPage = ref(1);
+const totalPages = ref(1);
+const totalProducts = ref(0);
+
+const loadProducts = async () => {
+  const response = await getProducts({
+    page: currentPage.value,
+    limit: 9,
+  });
+
+  products.value = response.products;
+
+  totalPages.value =
+    response.pagination.pages;
+
+  totalProducts.value =
+    response.pagination.total;
+};
+
+onMounted(loadProducts); const changePage = async (
+  page: number
+) => {
+  currentPage.value = page;
+
+  await loadProducts();
+};
 
 const breadcrumbItems = [
   {
