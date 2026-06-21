@@ -1,12 +1,9 @@
-import type {
-  ProductsResponse,
-  ProductFilters,
-} from "../model/types";
+import type { ProductsResponse, ProductFilters } from "../model/types";
 
 import { useApi } from "~/shared/core/client";
 
 export const getProducts = async (
-  filters: ProductFilters = {}
+  filters: ProductFilters = {},
 ): Promise<ProductsResponse> => {
   const api = useApi();
 
@@ -39,10 +36,30 @@ export const getProducts = async (
   if (filters.maxPrice !== undefined) {
     params.append("maxPrice", String(filters.maxPrice));
   }
+  if (filters.batteryCapacity) {
+    params.append("batteryCapacity", filters.batteryCapacity);
+  }
 
+  if (filters.screenType) {
+    params.append("screenType", filters.screenType);
+  }
+
+  if (filters.screenDiagonal) {
+    params.append("screenDiagonal", filters.screenDiagonal);
+  }
+
+  if (filters.protectionClass) {
+    params.append("protectionClass", filters.protectionClass);
+  }
+
+  if (filters.builtInMemory) {
+    params.append("builtInMemory", filters.builtInMemory);
+  }
+
+  if (filters.hasDiscount !== undefined) {
+    params.append("hasDiscount", String(filters.hasDiscount));
+  }
   const query = params.toString();
 
-  return api<ProductsResponse>(
-    `product/products${query ? `?${query}` : ""}`
-  );
+  return api<ProductsResponse>(`product/products${query ? `?${query}` : ""}`);
 };

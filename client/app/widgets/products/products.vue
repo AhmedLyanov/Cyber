@@ -7,11 +7,7 @@
         </div>
 
         <div class="grid grid-cols-4 gap-4">
-            <ProductCard
-                v-for="product in products"
-                :key="product._id"
-                :product="product"
-            />
+            <ProductCard v-for="product in displayedProducts" :key="product._id" :product="product" />
         </div>
     </div>
 </template>
@@ -26,6 +22,10 @@ import { getProducts } from "~/entities/product/api/get-products";
 import type { Product } from "~/entities/product/model/types";
 
 const products = ref<Product[]>([]);
+
+const displayedProducts = computed(() => {
+    return products.value.slice(0, 8);
+});
 
 onMounted(async () => {
     const response = await getProducts();

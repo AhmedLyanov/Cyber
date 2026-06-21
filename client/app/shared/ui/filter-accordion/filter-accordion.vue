@@ -71,42 +71,50 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import Icon from '../icon/icon.vue'
 import Input from '../input/input.vue'
 
+const emit = defineEmits([
+  'change'
+])
+
 const props = defineProps({
-    title: {
-        type: String,
-        required: true
-    },
+  title: {
+    type: String,
+    required: true
+  },
 
-    items: {
-        type: Array,
-        default: () => []
-    },
+  items: {
+    type: Array,
+    default: () => []
+  },
 
-    searchable: {
-        type: Boolean,
-        default: false
-    }
+  searchable: {
+    type: Boolean,
+    default: false
+  }
 })
 
 const isOpen = ref(false)
 const search = ref('')
 const selected = ref([])
 
-const filteredItems = computed(() => {
-    if (!search.value) {
-        return props.items
-    }
+watch(selected, (value) => {
+  emit('change', value)
+}, { deep: true })
 
-    return props.items.filter(item =>
-        item.label
-            .toLowerCase()
-            .includes(search.value.toLowerCase())
-    )
+const filteredItems = computed(() => {
+  if (!search.value) {
+    return props.items
+  }
+
+  return props.items.filter(item =>
+    item.label
+      .toLowerCase()
+      .includes(search.value.toLowerCase())
+  )
 })
 </script>
 

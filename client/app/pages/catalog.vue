@@ -4,17 +4,15 @@
 
     <div class="flex gap-8 px-40 pt-6 pb-14">
       <aside class="w-[256px] flex-shrink-0">
-        <FilterAccordion title="Brand" :items="brands" searchable />
+        <FilterAccordion title="Battery capacity" :items="batteryCapacity" @change="handleBatteryFilter" />
 
-        <FilterAccordion title="Battery capacity" :items="batteryCapacity" />
+        <FilterAccordion title="Screen type" :items="screenTypes" @change="handleScreenTypeFilter" />
 
-        <FilterAccordion title="Screen type" :items="screenTypes" />
+        <FilterAccordion title="Screen diagonal" :items="screenDiagonals" @change="handleScreenDiagonalFilter" />
 
-        <FilterAccordion title="Screen diagonal" :items="screenDiagonals" />
+        <FilterAccordion title="Protection class" :items="protectionClasses" @change="handleProtectionFilter" />
 
-        <FilterAccordion title="Protection class" :items="protectionClasses" />
-
-        <FilterAccordion title="Built-in memory" :items="memoryOptions" />
+        <FilterAccordion title="Built-in memory" :items="memoryOptions" @change="handleMemoryFilter" />
       </aside>
 
       <main class="flex-1">
@@ -57,49 +55,173 @@ import {
   FilterAccordion,
 } from "~/shared/ui";
 
+import {
+  PRODUCT_BRANDS,
+  BATTERY_CAPACITIES,
+  SCREEN_TYPES,
+  SCREEN_DIAGONALS,
+  PROTECTION_CLASSES,
+  BUILT_IN_MEMORY,
+} from "~/shared/constants/product-filters";
+
 import { getProducts } from "~/entities/product/api/get-products";
 
 import type {
   Product,
+  ProductBrand,
 } from "~/entities/product/model/types";
 
 const products = ref<Product[]>([]);
 
-const selectedSort = ref(null);
+const selectedSort = ref("");
 
 const currentPage = ref(1);
 const totalPages = ref(1);
 const totalProducts = ref(0);
 
+const selectedBrands = ref<string[]>([]);
+const selectedBatteryCapacity = ref<string[]>([]);
+const selectedScreenTypes = ref<string[]>([]);
+const selectedScreenDiagonals = ref<string[]>([]);
+const selectedProtectionClasses = ref<string[]>([]);
+const selectedMemoryOptions = ref<string[]>([]);
+
+const brands = PRODUCT_BRANDS.map((item) => ({
+  label: item,
+  count: 0,
+}));
+
+const batteryCapacity = BATTERY_CAPACITIES.map((item) => ({
+  label: item,
+  count: 0,
+}));
+
+const screenTypes = SCREEN_TYPES.map((item) => ({
+  label: item,
+  count: 0,
+}));
+
+const screenDiagonals = SCREEN_DIAGONALS.map((item) => ({
+  label: item,
+  count: 0,
+}));
+
+const protectionClasses = PROTECTION_CLASSES.map((item) => ({
+  label: item,
+  count: 0,
+}));
+
+const memoryOptions = BUILT_IN_MEMORY.map((item) => ({
+  label: item,
+  count: 0,
+}));
+
 const loadProducts = async () => {
   const response = await getProducts({
     page: currentPage.value,
     limit: 9,
+
+    brand:
+      selectedBrands.value.length > 0
+        ? (selectedBrands.value[0] as ProductBrand)
+        : undefined,
+
+    batteryCapacity:
+      selectedBatteryCapacity.value.length > 0
+        ? selectedBatteryCapacity.value[0]
+        : undefined,
+
+    screenType:
+      selectedScreenTypes.value.length > 0
+        ? selectedScreenTypes.value[0]
+        : undefined,
+
+    screenDiagonal:
+      selectedScreenDiagonals.value.length > 0
+        ? selectedScreenDiagonals.value[0]
+        : undefined,
+
+    protectionClass:
+      selectedProtectionClasses.value.length > 0
+        ? selectedProtectionClasses.value[0]
+        : undefined,
+
+    builtInMemory:
+      selectedMemoryOptions.value.length > 0
+        ? selectedMemoryOptions.value[0]
+        : undefined,
   });
 
   products.value = response.products;
 
-  totalPages.value =
-    response.pagination.pages;
-
-  totalProducts.value =
-    response.pagination.total;
+  totalPages.value = response.pagination.pages;
+  totalProducts.value = response.pagination.total;
 };
 
-onMounted(loadProducts); const changePage = async (
+const changePage = async (
   page: number
 ) => {
   currentPage.value = page;
-
   await loadProducts();
 };
 
+const handleBrandFilter = async (
+  values: string[]
+) => {
+  selectedBrands.value = values;
+  currentPage.value = 1;
+  await loadProducts();
+};
+
+const handleBatteryFilter = async (
+  values: string[]
+) => {
+  selectedBatteryCapacity.value = values;
+  currentPage.value = 1;
+  await loadProducts();
+};
+
+const handleScreenTypeFilter = async (
+  values: string[]
+) => {
+  selectedScreenTypes.value = values;
+  currentPage.value = 1;
+  await loadProducts();
+};
+
+const handleScreenDiagonalFilter = async (
+  values: string[]
+) => {
+  selectedScreenDiagonals.value = values;
+  currentPage.value = 1;
+  await loadProducts();
+};
+
+const handleProtectionFilter = async (
+  values: string[]
+) => {
+  selectedProtectionClasses.value = values;
+  currentPage.value = 1;
+  await loadProducts();
+};
+
+const handleMemoryFilter = async (
+  values: string[]
+) => {
+  selectedMemoryOptions.value = values;
+  currentPage.value = 1;
+  await loadProducts();
+};
+
+onMounted(loadProducts);
+
 const breadcrumbItems = [
   {
-    label: 'Home',
-    to: '/'
+    label: "Home",
+    to: "/",
   },
   {
-    label: 'Catalog'
-  }
-]</script>
+    label: "Catalog",
+  },
+];
+</script>
