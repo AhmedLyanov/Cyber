@@ -25,7 +25,7 @@ class ProductController {
         batteryCapacity,
         builtInMemory,
         protectionClass,
-        cpu
+        cpu,
       } = req.body;
 
       const image = req.file ? req.file.filename : null;
@@ -94,81 +94,122 @@ class ProductController {
   }
 
   async getProducts(req, res) {
-    try {
-      const {
-        type,
-        brand,
-        minPrice,
-        maxPrice,
-        hasDiscount,
-        search,
-        screenType,
-        screenDiagonal,
-        batteryCapacity,
-        builtInMemory,
-        protectionClass,
-      } = req.query;
+  try {
+    const {
+      page = 1,
+      limit = 9,
 
-      const filter = { isActive: true };
+      type,
+      brand,
+      minPrice,
+      maxPrice,
+      hasDiscount,
+      search,
+      screenType,
+      screenDiagonal,
+      batteryCapacity,
+      builtInMemory,
+      protectionClass,
+    } = req.query;
 
-      if (type) {
-        const types = Array.isArray(type) ? type : type.split(",");
-        filter.type = { $in: types };
-      }
+    const filter = {
+      isActive: true,
+    };
 
-      if (brand) {
-        const brands = Array.isArray(brand) ? brand : brand.split(",");
-        filter.brand = { $in: brands };
-      }
-
-      if (minPrice || maxPrice) {
-        filter.price = {};
-        if (minPrice) {
-          filter.price.$gte = Number(minPrice);
-        }
-        if (maxPrice) {
-          filter.price.$lte = Number(maxPrice);
-        }
-      }
-
-      if (hasDiscount !== undefined) {
-        filter.hasDiscount = hasDiscount === "true";
-      }
-
-      if (screenType) {
-        filter["specs.screenType"] = screenType;
-      }
-      if (screenDiagonal) {
-        filter["specs.screenDiagonal"] = screenDiagonal;
-      }
-      if (batteryCapacity) {
-        filter["specs.batteryCapacity"] = batteryCapacity;
-      }
-      if (builtInMemory) {
-        filter["specs.builtInMemory"] = builtInMemory;
-      }
-      if (protectionClass) {
-        filter["specs.protectionClass"] = protectionClass;
-      }
-
-      if (search) {
-        filter.$or = [
-          { title: { $regex: search, $options: "i" } },
-          { description: { $regex: search, $options: "i" } },
-        ];
-      }
-
-      const products = await Product.find(filter);
-      res.status(200).json({
-        message: "Products list",
-        count: products.length,
-        products,
-      });
-    } catch (error) {
-      console.error("Get products error:", error);
-      return res.status(500).json({ message: "Internal server error" });
+    if (type) {
+      const types = Array.isArray(type) ? type : type.split(",");
+      filter.type = { $in: types };
     }
+
+    if (brand) {
+      const brands = Array.isArray(brand) ? brand : brand.split(",");
+      filter.brand = { $in: brands };
+    }
+
+    if (minPrice || maxPrice) {
+      filter.price = {};
+
+      if (minPrice) {
+        filter.price.$gte = Number(minPrice);
+      }
+
+      if (maxPrice) {
+        filter.price.$lte = Number(maxPrice);
+      }
+    }
+
+    if (hasDiscount !== undefined) {
+      filter.hasDiscount = hasDiscount === "true";
+    }
+
+    if (screenType) {
+      filter["specs.screenType"] = screenType;
+    }
+
+    if (screenDiagonal) {
+      filter["specs.screenDiagonal"] = screenDiagonal;
+    }
+
+    if (batteryCapacity) {
+      filter["specs.batteryCapacity"] = batteryCapacity;
+    }
+
+    if (builtInMemory) {
+      filter["specs.builtInMemory"] = builtInMemory;
+    }
+
+    if (protectionClass) {
+      filter["specs.protectionClass"] = protectionClass;
+    }
+
+    if (search) {
+      filter.$or = [
+        {
+          title: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          description: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+      ];
+    }
+
+    const currentPage = Number(page);
+    const currentLimit = Number(limit);
+
+    const skip = (currentPage - 1) * currentLimit;
+
+    const total = await Product.countDocuments(filter);
+
+    const products = await Product.find(filter)
+      .skip(skip)
+      .limit(currentLimit);
+
+    res.status(200).json({
+      message: "Products list",
+
+      products,
+
+      pagination: {
+        page: currentPage,
+        limit: currentLimit,
+        total,
+        pages: Math.ceil(total / currentLimit),
+      },
+    });
+  } catch (error) {
+    console.error("Get products error:", error);
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
   }
+}
 
   async getProductById(req, res) {
     try {
