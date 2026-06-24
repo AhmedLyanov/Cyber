@@ -29,6 +29,7 @@ const ProductSchema = new mongoose.Schema(
     },
 
     specs: {
+      color: { type: String },
       screenType: { type: String },
       screenDiagonal: { type: String },
       batteryCapacity: { type: String },

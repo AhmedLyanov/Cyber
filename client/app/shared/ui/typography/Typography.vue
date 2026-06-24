@@ -13,6 +13,7 @@ export type TypographyVariant =
   | "body"
   | "bodySm"
   | "bodyLg"
+  | "textBase"
   | "caption"
   | "navigation"
   | "footer";
@@ -62,6 +63,9 @@ const variants: Record<TypographyVariant, string> = {
 
   bodyLg:
     "text-[18px] leading-7 text-gray",
+
+  textBase:
+    "font-normal text-[15px] leading-[24px]",
 
   navigation:
     "text-base transition-opacity duration-200 hover:opacity-70",

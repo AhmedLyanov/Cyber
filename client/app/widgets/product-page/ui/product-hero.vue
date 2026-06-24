@@ -25,19 +25,12 @@
           </Typography>
         </div>
 
-        <div class="flex items-center gap-6 ">
-          <Typography variant="text-base">
-            Select color:
-          </Typography>
-
-          <div class="flex gap-2">
-            <button v-for="color in colors" :key="color.name" @click="selectedColor = color.name"
-              class="w-8 h-8 rounded-full border-2 transition-all hover:scale-110" :class="[
-                selectedColor === color.name ? 'border-black' : 'border-transparent',
-                color.class
-              ]" :style="{ backgroundColor: color.value }" :title="color.name" />
-          </div>
-        </div>
+        <ColorPicker
+          v-model="selectedColor"
+          :colors="colors"
+          label="Select color:"
+          size="md"
+        />
 
         <div class="flex flex-wrap gap-4">
           <div v-for="specification in specifications" :key="specification.title"
@@ -86,22 +79,47 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 
-import { Typography, Icon, Button } from "~/shared/ui";
+import { Typography, Icon, Button, ColorPicker } from "~/shared/ui";
 import type { Product } from "~/entities/product/model/types";
 
 const props = defineProps<{
   product: Product;
 }>();
 
-const selectedColor = ref('Black');
+const selectedColor = ref('#000000');
 const selectedImage = ref("");
 
 const colors = [
-  { name: 'Black', value: 'var(--color-product-black)', class: 'border-gray-300' },
-  { name: 'Purple', value: 'var(--color-product-purple)', class: 'border-gray-300' },
-  { name: 'Red', value: 'var(--color-product-red)', class: 'border-gray-300' },
-  { name: 'Gold', value: 'var(--color-product-gold)', class: 'border-gray-300' },
-  { name: 'Silver', value: 'var(--color-product-silver)', class: 'border-gray-400' },
+  { 
+    value: 'var(--color-product-black)', 
+    name: 'Black',
+    label: 'Black',
+    class: 'border-gray-300' 
+  },
+  { 
+    value: 'var(--color-product-purple)', 
+    name: 'Purple',
+    label: 'Purple',
+    class: 'border-gray-300' 
+  },
+  { 
+    value: 'var(--color-product-red)', 
+    name: 'Red',
+    label: 'Red',
+    class: 'border-gray-300' 
+  },
+  { 
+    value: 'var(--color-product-gold)', 
+    name: 'Gold',
+    label: 'Gold',
+    class: 'border-gray-300' 
+  },
+  { 
+    value: 'var(--color-product-silver)', 
+    name: 'Silver',
+    label: 'Silver',
+    class: 'border-gray-400' 
+  },
 ];
 
 const productImages = computed(() => [
@@ -171,9 +189,5 @@ const handleAddToCart = () => {
 
 .text-product-attributes-icon {
   color: var(--color-product-attributes-icon);
-}
-
-button:active {
-  transform: scale(0.95);
 }
 </style>
