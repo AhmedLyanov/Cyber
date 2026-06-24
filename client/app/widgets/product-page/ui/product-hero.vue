@@ -25,6 +25,20 @@
           </Typography>
         </div>
 
+        <div class="flex items-center gap-6 ">
+          <Typography variant="text-base">
+            Select color:
+          </Typography>
+
+          <div class="flex gap-2">
+            <button v-for="color in colors" :key="color.name" @click="selectedColor = color.name"
+              class="w-8 h-8 rounded-full border-2 transition-all hover:scale-110" :class="[
+                selectedColor === color.name ? 'border-black' : 'border-transparent',
+                color.class
+              ]" :style="{ backgroundColor: color.value }" :title="color.name" />
+          </div>
+        </div>
+
         <div class="flex flex-wrap gap-4">
           <div v-for="specification in specifications" :key="specification.title"
             class="min-w-42 flex-1 flex items-center gap-2 bg-product-attributes rounded-[7px] p-4">
@@ -61,7 +75,7 @@
           Add to Wishlist
         </Button>
 
-        <Button class="w-65">
+        <Button class="w-65" @click="handleAddToCart">
           Add to Cart
         </Button>
       </div>
@@ -79,11 +93,20 @@ const props = defineProps<{
   product: Product;
 }>();
 
+const selectedColor = ref('Black');
+const selectedImage = ref("");
+
+const colors = [
+  { name: 'Black', value: 'var(--color-product-black)', class: 'border-gray-300' },
+  { name: 'Purple', value: 'var(--color-product-purple)', class: 'border-gray-300' },
+  { name: 'Red', value: 'var(--color-product-red)', class: 'border-gray-300' },
+  { name: 'Gold', value: 'var(--color-product-gold)', class: 'border-gray-300' },
+  { name: 'Silver', value: 'var(--color-product-silver)', class: 'border-gray-400' },
+];
+
 const productImages = computed(() => [
   `http://localhost:5001/uploads/products/${props.product.image}`,
 ]);
-
-const selectedImage = ref("");
 
 watch(
   productImages,
@@ -135,4 +158,22 @@ const scrollToDetails = () => {
     });
   }
 };
+
+const handleAddToCart = () => {
+  console.log('Add to cart:', props.product._id, 'Color:', selectedColor.value);
+};
 </script>
+
+<style scoped>
+.bg-product-attributes {
+  background-color: var(--color-product-attributes);
+}
+
+.text-product-attributes-icon {
+  color: var(--color-product-attributes-icon);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+</style>
