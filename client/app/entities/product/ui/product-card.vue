@@ -1,7 +1,7 @@
 <template>
   <NuxtLink
     :to="`/product/${props.product._id}`"
-    class="block w-67 bg-product-color rounded-lg p-5 flex flex-col items-center transition hover:scale-[1.02]"
+    class="w-67 bg-product-color rounded-lg p-5 flex flex-col items-center"
   >
     <div class="w-full flex items-center justify-end">
       <Icon name="favourite" size="lg" />

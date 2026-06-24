@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  modules: ['@nuxt/image'],
+  modules: ['@nuxt/image', '@pinia/nuxt'],
   css: [
       '~/shared/assets/styles/main.css'
   ],
