@@ -312,6 +312,11 @@ import {
   type ProductBrand,
 } from '~/features/create-product/model/types'
 
+definePageMeta({
+  middleware: ["auth"],
+});
+
+
 const breadcrumbItems = [
   { label: 'Home', to: '/' },
   { label: 'Admin', to: '/admin' },

@@ -55,6 +55,9 @@ import CartProduct from "~/entities/cart/ui/cart-product.vue";
 import OrderSummary from "~/widgets/order-summary/ui/order-summary.vue";
 import { useCartStore } from "~/entities/cart/model/use-cart";
 
+definePageMeta({
+  middleware: ["auth"],
+});
 
 const cartStore = useCartStore();
 const errorMessage = ref<string | null>(null);
