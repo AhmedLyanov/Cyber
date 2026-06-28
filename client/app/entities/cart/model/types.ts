@@ -16,6 +16,6 @@ export interface Cart {
   updatedAt?: string;
 }
 
-export interface CartWithProducts extends Omit<Cart, 'items'> {
+export interface CartWithProducts extends Omit<Cart, "items"> {
   items: (CartItem & { productId: Product })[];
 }

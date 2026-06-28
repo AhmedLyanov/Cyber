@@ -24,22 +24,14 @@
         </NuxtLink>
       </div>
       <div v-else>
-        <template v-for="(item, index) in cartItems" :key="item._id || index">
-          <CartProduct
-            :product-id="getProductInfo(item).id"
-            :title="getProductInfo(item).title"
-            :image="getProductInfo(item).image"
-            :sku="getProductInfo(item).sku"
-            :quantity="getProductInfo(item).quantity"
-            :price="getProductInfo(item).price"
-            @remove="handleRemoveItem"
-            @update="handleUpdateQuantity"
-            @error="handleError"
-          />
-          <div 
-            v-if="index !== cartItems.length - 1" 
-            class="h-px bg-cart-border-separator" 
-          />
+        <template v-for="item in cartItems" :key="typeof item.productId === 'object'
+          ? item.productId._id
+          : item.productId
+          ">
+          <CartProduct :product-id="getProductInfo(item).id" :title="getProductInfo(item).title"
+            :image="getProductInfo(item).image" :sku="getProductInfo(item).sku"
+            :quantity="getProductInfo(item).quantity" :price="getProductInfo(item).price" />
+          <div v-if="index !== cartItems.length - 1" class="h-px bg-cart-border-separator" />
         </template>
       </div>
     </div>
@@ -55,9 +47,7 @@ import CartProduct from "~/entities/cart/ui/cart-product.vue";
 import OrderSummary from "~/widgets/order-summary/ui/order-summary.vue";
 import { useCartStore } from "~/entities/cart/model/use-cart";
 
-definePageMeta({
-  middleware: ["auth"],
-});
+
 
 const cartStore = useCartStore();
 const errorMessage = ref<string | null>(null);
@@ -85,29 +75,38 @@ const handleRemoveItem = async (productId: string) => {
   }
 };
 
-const handleUpdateQuantity = async (productId: string, quantity: number) => {
-  try {
-    errorMessage.value = null;
-    await cartStore.updateQuantity(productId, quantity);
-  } catch (error: any) {
-    errorMessage.value = error.message || 'Failed to update quantity';
-  }
-};
-
 const handleError = (message: string) => {
   errorMessage.value = message;
 };
 
 const getProductInfo = (item: any) => {
-  const product = typeof item.productId === 'object' ? item.productId : null;
-  
+  const isProductObject =
+    typeof item.productId === "object" &&
+    item.productId !== null;
+
   return {
-    id: item.productId._id || item.productId,
-    title: product?.title || 'Product',
-    image: product?.image || '',
-    sku: product?.sku || item.productId._id?.slice(-8) || 'N/A',
+    id: isProductObject
+      ? item.productId._id
+      : item.productId,
+
+    title: isProductObject
+      ? item.productId.title
+      : item.title || "Product",
+
+    image: isProductObject
+      ? item.productId.image
+      : item.image || "",
+
+    sku: isProductObject
+      ? item.productId.sku
+      : item.sku || "N/A",
+
     quantity: item.quantity,
-    price: item.price,
+
+    price:
+      (isProductObject
+        ? item.productId.price
+        : item.price) || 0,
   };
 };
 

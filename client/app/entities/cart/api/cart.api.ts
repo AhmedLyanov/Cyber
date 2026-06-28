@@ -2,7 +2,7 @@ import { useApi } from "~/shared/core/client";
 
 export interface CartItem {
   _id?: string;
-  productId: string; 
+  productId: string;
   quantity: number;
   price: number;
 }
@@ -41,32 +41,45 @@ class CartApi {
     return response;
   }
 
-  async addToCart(data: AddToCartDto): Promise<{ message: string; cart: Cart }> {
-    const response = await this.api<{ message: string; cart: Cart }>("/cart/add", {
-      method: 'POST',
+  async addToCart(
+    data: AddToCartDto,
+  ): Promise<{ message: string; cart: Cart }> {
+    const api = useApi();
+
+    return await api("/cart/add", {
+      method: "POST",
       body: data,
     });
+  }
+
+  async removeFromCart(
+    productId: string,
+  ): Promise<{ message: string; cart: Cart }> {
+    const response = await this.api<{ message: string; cart: Cart }>(
+      `/cart/remove/${productId}`,
+      {
+        method: "DELETE",
+      },
+    );
     return response;
   }
 
-  async removeFromCart(productId: string): Promise<{ message: string; cart: Cart }> {
-    const response = await this.api<{ message: string; cart: Cart }>(`/cart/remove/${productId}`, {
-      method: 'DELETE',
-    });
-    return response;
-  }
-
-  async updateQuantity(data: UpdateQuantityDto): Promise<{ message: string; cart: Cart }> {
-    const response = await this.api<{ message: string; cart: Cart }>("/cart/update", {
-      method: 'PUT',
-      body: data,
-    });
+  async updateQuantity(
+    data: UpdateQuantityDto,
+  ): Promise<{ message: string; cart: Cart }> {
+    const response = await this.api<{ message: string; cart: Cart }>(
+      "/cart/update",
+      {
+        method: "PUT",
+        body: data,
+      },
+    );
     return response;
   }
 
   async clearCart(): Promise<{ message: string }> {
     const response = await this.api<{ message: string }>("/cart/clear", {
-      method: 'DELETE',
+      method: "DELETE",
     });
     return response;
   }
