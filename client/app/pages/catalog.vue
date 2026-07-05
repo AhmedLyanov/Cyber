@@ -4,6 +4,8 @@
 
     <div class="flex gap-8 px-40 pt-6 pb-14">
       <aside class="w-[256px] flex-shrink-0">
+        <FilterAccordion title="Brand" :items="brands" @change="handleBrandFilter" />
+
         <FilterAccordion title="Battery capacity" :items="batteryCapacity" @change="handleBatteryFilter" />
 
         <FilterAccordion title="Screen type" :items="screenTypes" @change="handleScreenTypeFilter" />
@@ -42,9 +44,8 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 import ProductCard from "~/entities/product/ui/product-card.vue";
 
@@ -56,12 +57,12 @@ import {
 } from "~/shared/ui";
 
 import {
-  PRODUCT_BRANDS,
   BATTERY_CAPACITIES,
   SCREEN_TYPES,
   SCREEN_DIAGONALS,
   PROTECTION_CLASSES,
   BUILT_IN_MEMORY,
+  PRODUCT_BRANDS
 } from "~/shared/constants/product-filters";
 
 import { getProducts } from "~/entities/product/api/get-products";
@@ -86,12 +87,12 @@ const selectedScreenDiagonals = ref<string[]>([]);
 const selectedProtectionClasses = ref<string[]>([]);
 const selectedMemoryOptions = ref<string[]>([]);
 
-const brands = PRODUCT_BRANDS.map((item) => ({
+const batteryCapacity = BATTERY_CAPACITIES.map((item) => ({
   label: item,
   count: 0,
 }));
 
-const batteryCapacity = BATTERY_CAPACITIES.map((item) => ({
+const brands = PRODUCT_BRANDS.map((item) => ({
   label: item,
   count: 0,
 }));
@@ -115,6 +116,107 @@ const memoryOptions = BUILT_IN_MEMORY.map((item) => ({
   label: item,
   count: 0,
 }));
+
+const seoTitle = computed(() => {
+  const filters: string[] = [];
+
+  if (selectedBrands.value.length) {
+    filters.push(selectedBrands.value.join(", "));
+  }
+
+  if (selectedScreenTypes.value.length) {
+    filters.push(selectedScreenTypes.value.join(", "));
+  }
+
+  if (selectedMemoryOptions.value.length) {
+    filters.push(selectedMemoryOptions.value.join(", "));
+  }
+
+  if (selectedProtectionClasses.value.length) {
+    filters.push(selectedProtectionClasses.value.join(", "));
+  }
+
+  if (selectedBatteryCapacity.value.length) {
+    filters.push(selectedBatteryCapacity.value.join(", "));
+  }
+
+  if (selectedScreenDiagonals.value.length) {
+    filters.push(selectedScreenDiagonals.value.join(", "));
+  }
+
+  if (filters.length > 0) {
+    return `${filters.join(" • ")} (${totalProducts.value}) | Cyber`;
+  }
+
+  return `Catalog (${totalProducts.value}) | Cyber`;
+});
+
+const seoDescription = computed(() => {
+  const filters: string[] = [];
+
+  if (selectedBrands.value.length) {
+    filters.push(`brands ${selectedBrands.value.join(", ")}`);
+  }
+
+  if (selectedScreenTypes.value.length) {
+    filters.push(`screen types ${selectedScreenTypes.value.join(", ")}`);
+  }
+
+  if (selectedMemoryOptions.value.length) {
+    filters.push(`storage ${selectedMemoryOptions.value.join(", ")}`);
+  }
+
+  if (selectedProtectionClasses.value.length) {
+    filters.push(
+      `protection ${selectedProtectionClasses.value.join(", ")}`
+    );
+  }
+
+  if (selectedBatteryCapacity.value.length) {
+    filters.push(
+      `battery capacity ${selectedBatteryCapacity.value.join(", ")}`
+    );
+  }
+
+  if (selectedScreenDiagonals.value.length) {
+    filters.push(
+      `screen size ${selectedScreenDiagonals.value.join(", ")}`
+    );
+  }
+
+  if (filters.length > 0) {
+    return `Browse products with ${filters.join(
+      ", "
+    )} in the Cyber electronics catalog. Found ${totalProducts.value
+      } matching products.`;
+  }
+
+  return "Browse smartphones, laptops, gaming devices and accessories in the Cyber electronics catalog.";
+});
+
+useSeoMeta({
+  title: () => seoTitle.value,
+  description: () => seoDescription.value,
+
+  ogTitle: () => seoTitle.value,
+  ogDescription: () => seoDescription.value,
+
+  twitterTitle: () => seoTitle.value,
+  twitterDescription: () => seoDescription.value,
+
+  twitterCard: "summary_large_image",
+
+  robots: "index, follow",
+});
+
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: "https://cyber.com/catalog",
+    },
+  ],
+});
 
 const loadProducts = async () => {
   const response = await getProducts({
@@ -158,56 +260,42 @@ const loadProducts = async () => {
   totalProducts.value = response.pagination.total;
 };
 
-const changePage = async (
-  page: number
-) => {
+const changePage = async (page: number) => {
   currentPage.value = page;
   await loadProducts();
 };
 
-const handleBrandFilter = async (
-  values: string[]
-) => {
+const handleBrandFilter = async (values: string[]) => {
   selectedBrands.value = values;
   currentPage.value = 1;
   await loadProducts();
 };
 
-const handleBatteryFilter = async (
-  values: string[]
-) => {
+const handleBatteryFilter = async (values: string[]) => {
   selectedBatteryCapacity.value = values;
   currentPage.value = 1;
   await loadProducts();
 };
 
-const handleScreenTypeFilter = async (
-  values: string[]
-) => {
+const handleScreenTypeFilter = async (values: string[]) => {
   selectedScreenTypes.value = values;
   currentPage.value = 1;
   await loadProducts();
 };
 
-const handleScreenDiagonalFilter = async (
-  values: string[]
-) => {
+const handleScreenDiagonalFilter = async (values: string[]) => {
   selectedScreenDiagonals.value = values;
   currentPage.value = 1;
   await loadProducts();
 };
 
-const handleProtectionFilter = async (
-  values: string[]
-) => {
+const handleProtectionFilter = async (values: string[]) => {
   selectedProtectionClasses.value = values;
   currentPage.value = 1;
   await loadProducts();
 };
 
-const handleMemoryFilter = async (
-  values: string[]
-) => {
+const handleMemoryFilter = async (values: string[]) => {
   selectedMemoryOptions.value = values;
   currentPage.value = 1;
   await loadProducts();

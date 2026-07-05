@@ -6,7 +6,7 @@
             <Typography variant="h4">Featured Products</Typography>
         </div>
 
-        <div class="grid grid-cols-4 gap-4 items-center">
+        <div class="grid grid-cols-4 gap-4">
             <ProductCard v-for="product in displayedProducts" :key="product._id" :product="product" />
 
         </div>

@@ -47,7 +47,22 @@ import CartProduct from "~/entities/cart/ui/cart-product.vue";
 import OrderSummary from "~/widgets/order-summary/ui/order-summary.vue";
 import { useCartStore } from "~/entities/cart/model/use-cart";
 
+useSeoMeta({
+  title: "Shopping Cart | Cyber",
+  description:
+    "Review the products in your shopping cart, update quantities, and proceed to checkout securely on Cyber.",
+  ogTitle: "Shopping Cart | Cyber",
+  ogDescription:
+    "Review the products in your shopping cart and continue your purchase on Cyber.",
+  ogType: "website",
+  twitterCard: "summary_large_image",
+});
 
+useHead({
+  htmlAttrs: {
+    lang: "en",
+  },
+});
 
 const cartStore = useCartStore();
 const errorMessage = ref<string | null>(null);
