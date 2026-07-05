@@ -15,11 +15,58 @@ const route = useRoute();
 
 const { product } = await getProduct(route.params.id as string);
 
+useSeoMeta({
+  title: `${product.title} | Cyber`,
+
+  description:
+    `${product.title} by ${product.brand}. ` +
+    `Buy now for $${product.price} with fast delivery and secure checkout on Cyber.`,
+
+  ogTitle: `${product.title} | Cyber`,
+
+  ogDescription:
+    `${product.title} by ${product.brand}. Available now on Cyber.`,
+
+  ogImage: product.image,
+
+  ogType: "product",
+
+  twitterTitle: `${product.title} | Cyber`,
+
+  twitterDescription:
+    `${product.title} by ${product.brand}. Available now on Cyber.`,
+
+  twitterImage: product.image,
+
+  twitterCard: "summary_large_image",
+
+  robots: "index, follow",
+});
+
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: `https://cyber.com/product/${product._id}`,
+    },
+  ],
+});
+
 const breadcrumbItems = computed(() => [
-  { label: "Home", to: "/" },
-  { label: "Catalog", to: "/catalog" },
-  { label: product.brand },
-  { label: product.title },
+  {
+    label: "Home",
+    to: "/",
+  },
+  {
+    label: "Catalog",
+    to: "/catalog",
+  },
+  {
+    label: product.brand,
+  },
+  {
+    label: product.title,
+  },
 ]);
 </script>
 
