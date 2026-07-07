@@ -1,9 +1,7 @@
 <template>
   <NuxtLink :to="`/product/${props.product._id}`"
     class="w-67 bg-product-color rounded-lg p-5 flex flex-col items-center">
-    <button type="button" class="w-full flex items-center justify-end mb-3">
-      <Icon name="favourite" size="lg" />
-    </button>
+    <AddToWishlist class="w-full flex items-center justify-end mb-3" :product-id="props.product._id" />
     <div class="w-40 h-40 flex items-center justify-center mb-4">
       <NuxtImg v-if="props.product.image" :src="`http://localhost:5001/uploads/products/${props.product.image}`"
         :alt="props.product.title" class="w-full h-full object-contain" />
@@ -30,6 +28,7 @@
 <script setup lang="ts">
 import { Typography, Button, Icon } from "~/shared/ui";
 import type { Product } from "../model/types";
+import AddToWishlist from "~/features/add-to-wishlist/ui/add-to-wishlist.vue";
 
 const props = defineProps<{
   product: Product;
