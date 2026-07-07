@@ -16,6 +16,7 @@ const __dirname = path.dirname(__filename);
 import authRouter from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import cartRoutes from "./routes/cart.routes.js"
+import wishlistRoutes from "./routes/wishlist.routes.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 const CLIENT_ORIGINS = [
@@ -31,7 +32,7 @@ app.use(cors({
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-
+app.use("/wishlist", wishlistRoutes);
 app.use("/product", productRoutes);
 app.use("/auth", authRouter);
 app.use('/cart/', cartRoutes)
