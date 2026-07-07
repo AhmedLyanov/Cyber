@@ -25,12 +25,7 @@
           </Typography>
         </div>
 
-        <ColorPicker
-          v-model="selectedColor"
-          :colors="colors"
-          label="Select color:"
-          size="md"
-        />
+        <ColorPicker v-model="selectedColor" :colors="colors" label="Select color:" size="md" />
 
         <div class="flex flex-wrap gap-4">
           <div v-for="specification in specifications" :key="specification.title"
@@ -68,7 +63,7 @@
           Add to Wishlist
         </Button>
 
-        <Button class="w-65" @click="handleAddToCart">
+        <Button class="w-65" :disabled="isPending" @click="handleAddToCart">
           Add to Cart
         </Button>
       </div>
@@ -81,44 +76,45 @@ import { computed, ref, watch } from "vue";
 
 import { Typography, Icon, Button, ColorPicker } from "~/shared/ui";
 import type { Product } from "~/entities/product/model/types";
+import { useAddToCart } from "~/features/add-to-cart/model/use-add-to-cart";
 
 const props = defineProps<{
   product: Product;
 }>();
-
+const { addToCart, isPending } = useAddToCart();
 const selectedColor = ref('#000000');
 const selectedImage = ref("");
 
 const colors = [
-  { 
-    value: 'var(--color-product-black)', 
+  {
+    value: 'var(--color-product-black)',
     name: 'Black',
     label: 'Black',
-    class: 'border-gray-300' 
+    class: 'border-gray-300'
   },
-  { 
-    value: 'var(--color-product-purple)', 
+  {
+    value: 'var(--color-product-purple)',
     name: 'Purple',
     label: 'Purple',
-    class: 'border-gray-300' 
+    class: 'border-gray-300'
   },
-  { 
-    value: 'var(--color-product-red)', 
+  {
+    value: 'var(--color-product-red)',
     name: 'Red',
     label: 'Red',
-    class: 'border-gray-300' 
+    class: 'border-gray-300'
   },
-  { 
-    value: 'var(--color-product-gold)', 
+  {
+    value: 'var(--color-product-gold)',
     name: 'Gold',
     label: 'Gold',
-    class: 'border-gray-300' 
+    class: 'border-gray-300'
   },
-  { 
-    value: 'var(--color-product-silver)', 
+  {
+    value: 'var(--color-product-silver)',
     name: 'Silver',
     label: 'Silver',
-    class: 'border-gray-400' 
+    class: 'border-gray-400'
   },
 ];
 
@@ -178,7 +174,10 @@ const scrollToDetails = () => {
 };
 
 const handleAddToCart = () => {
-  console.log('Add to cart:', props.product._id, 'Color:', selectedColor.value);
+  addToCart({
+    productId: props.product._id,
+    quantity: 1,
+  });
 };
 </script>
 

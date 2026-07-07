@@ -5,10 +5,8 @@
     :class="{ 'shadow-md': isScrolled }"
   >
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-      <!-- Логотип -->
       <Logo class="shrink-0" />
 
-      <!-- Поиск — адаптивная ширина -->
       <div class="hidden flex-1 md:block">
         <Input 
           placeholder="Search" 
@@ -16,13 +14,8 @@
           class="w-full max-w-md"
         />
       </div>
-
-      <!-- Навигация — скрывается в бургер -->
       <Navigation class="hidden lg:flex" />
-
-      <!-- Мобильные контролы -->
       <div class="flex items-center gap-2 md:hidden">
-        <!-- Кнопка поиска (открывает оверлей) -->
         <button 
           @click="showMobileSearch = true"
           class="rounded-full p-2 hover:bg-muted/50"
@@ -30,8 +23,7 @@
         >
           <Icon name="search" class="size-5" />
         </button>
-        
-        <!-- Бургер-меню -->
+      
         <button 
           @click="mobileMenuOpen = !mobileMenuOpen"
           class="rounded-full p-2 hover:bg-muted/50"
@@ -42,7 +34,6 @@
       </div>
     </div>
 
-    <!-- Мобильный поиск (оверлей) -->
     <Transition name="slide-down">
       <div 
         v-if="showMobileSearch"
@@ -58,7 +49,6 @@
       </div>
     </Transition>
 
-    <!-- Мобильное меню -->
     <Transition name="slide-down">
       <div 
         v-if="mobileMenuOpen"
@@ -80,7 +70,6 @@ const mobileMenuOpen = ref(false);
 const showMobileSearch = ref(false);
 const searchQuery = ref('');
 
-// Отслеживание скролла для тени
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 10;
 };
@@ -92,8 +81,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
 });
-
-// Закрывать меню при ресайзе на десктоп
 const handleResize = () => {
   if (window.innerWidth >= 1024) {
     mobileMenuOpen.value = false;
