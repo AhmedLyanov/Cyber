@@ -16,7 +16,6 @@
 
         <FilterAccordion title="Built-in memory" :items="memoryOptions" @change="handleMemoryFilter" />
       </aside>
-
       <main class="flex-1">
         <div class="flex items-center justify-between mb-4">
           <div>
@@ -33,12 +32,19 @@
             default-label="By rating" />
         </div>
 
-        <div class="flex flex-wrap gap-4">
-          <ProductCard v-for="product in products" :key="product._id" :product="product" />
+        <div v-if="isLoading" class="flex items-center justify-center min-h-[500px]">
+          <Spinner class="size-10" />
         </div>
-        <div class="flex justify-center mt-10">
-          <Pagination :current-page="currentPage" :pages="totalPages" @change="changePage" />
-        </div>
+
+        <template v-else>
+          <div class="flex flex-wrap gap-4">
+            <ProductCard v-for="product in products" :key="product._id" :product="product" />
+          </div>
+
+          <div v-if="totalPages > 1" class="flex justify-center mt-10">
+            <Pagination :current-page="currentPage" :pages="totalPages" @change="changePage" />
+          </div>
+        </template>
       </main>
 
     </div>
@@ -54,6 +60,7 @@ import {
   Dropdown,
   Pagination,
   FilterAccordion,
+  Spinner
 } from "~/shared/ui";
 
 import {
@@ -73,6 +80,7 @@ import type {
 } from "~/entities/product/model/types";
 
 const products = ref<Product[]>([]);
+const isLoading = ref(false);
 
 const selectedSort = ref("");
 
@@ -219,45 +227,50 @@ useHead({
 });
 
 const loadProducts = async () => {
-  const response = await getProducts({
-    page: currentPage.value,
-    limit: 9,
+  isLoading.value = true;
 
-    brand:
-      selectedBrands.value.length > 0
-        ? (selectedBrands.value[0] as ProductBrand)
-        : undefined,
+  try {
+    const response = await getProducts({
+      page: currentPage.value,
+      limit: 9,
 
-    batteryCapacity:
-      selectedBatteryCapacity.value.length > 0
-        ? selectedBatteryCapacity.value[0]
-        : undefined,
+      brand:
+        selectedBrands.value.length > 0
+          ? (selectedBrands.value[0] as ProductBrand)
+          : undefined,
 
-    screenType:
-      selectedScreenTypes.value.length > 0
-        ? selectedScreenTypes.value[0]
-        : undefined,
+      batteryCapacity:
+        selectedBatteryCapacity.value.length > 0
+          ? selectedBatteryCapacity.value[0]
+          : undefined,
 
-    screenDiagonal:
-      selectedScreenDiagonals.value.length > 0
-        ? selectedScreenDiagonals.value[0]
-        : undefined,
+      screenType:
+        selectedScreenTypes.value.length > 0
+          ? selectedScreenTypes.value[0]
+          : undefined,
 
-    protectionClass:
-      selectedProtectionClasses.value.length > 0
-        ? selectedProtectionClasses.value[0]
-        : undefined,
+      screenDiagonal:
+        selectedScreenDiagonals.value.length > 0
+          ? selectedScreenDiagonals.value[0]
+          : undefined,
 
-    builtInMemory:
-      selectedMemoryOptions.value.length > 0
-        ? selectedMemoryOptions.value[0]
-        : undefined,
-  });
+      protectionClass:
+        selectedProtectionClasses.value.length > 0
+          ? selectedProtectionClasses.value[0]
+          : undefined,
 
-  products.value = response.products;
+      builtInMemory:
+        selectedMemoryOptions.value.length > 0
+          ? selectedMemoryOptions.value[0]
+          : undefined,
+    });
 
-  totalPages.value = response.pagination.pages;
-  totalProducts.value = response.pagination.total;
+    products.value = response.products;
+    totalPages.value = response.pagination.pages;
+    totalProducts.value = response.pagination.total;
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 const changePage = async (page: number) => {

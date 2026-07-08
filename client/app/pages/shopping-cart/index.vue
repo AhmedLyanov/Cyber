@@ -14,7 +14,7 @@
       </div>
 
       <div v-if="isLoading && !cartStore.cart" class="flex justify-center py-20">
-        <Typography variant="body1">Loading cart...</Typography>
+        <Spinner />
       </div>
 
       <div v-else-if="!cartStore.hasItems" class="flex flex-col items-center justify-center py-20">
@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { Typography } from "~/shared/ui";
+import { Typography, Spinner } from "~/shared/ui";
 import CartProduct from "~/entities/cart/ui/cart-product.vue";
 import OrderSummary from "~/widgets/order-summary/ui/order-summary.vue";
 import { useCartStore } from "~/entities/cart/model/use-cart";

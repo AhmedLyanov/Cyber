@@ -1,40 +1,24 @@
 <template>
-  <section class="px-40 py-20">
+  <section class="min-h-[70vh]  px-40 py-28">
 
-    <Typography 
-      variant="titleLg"
-      class="mb-10"
-    >
-      Favourites
+    <Typography class="mb-10" variant="h3">
+      Wishlist
     </Typography>
 
 
-    <div
-      v-if="isLoading"
-      class="text-center"
-    >
-      Loading...
+    <div v-if="isLoading" class="flex items-center justify-center">
+      <Spinner />
     </div>
 
 
-    <div
-      v-else-if="!products.length"
-      class="text-center"
-    >
+    <div v-else-if="!products.length" class="text-center">
       Your wishlist is empty
     </div>
 
 
-    <div
-      v-else
-      class="grid grid-cols-4 gap-6"
-    >
+    <div v-else class="grid grid-cols-4 gap-6">
 
-      <ProductCard
-        v-for="product in products"
-        :key="product._id"
-        :product="product"
-      />
+      <ProductCard v-for="product in products" :key="product._id" :product="product" />
 
     </div>
 
@@ -46,7 +30,7 @@
 
 import { computed } from "vue";
 
-import { Typography } from "~/shared/ui";
+import { Typography, Spinner } from "~/shared/ui";
 
 import ProductCard from "~/entities/product/ui/product-card.vue";
 
