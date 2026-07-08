@@ -14,6 +14,7 @@ import SmartWatchesIcon from '~/shared/assets/images/Smart Watches.svg'
 import ArrowLeft from '~/shared/assets/images/arrow_left.svg'
 import ArrowRight from '~/shared/assets/images/arrow_right.svg'
 import HeartIcon from '~/shared/assets/images/favourite.svg'
+import HeartActiveIcon from '~/shared/assets/images/favouriteActive.svg'
 import FilterArrow from '~/shared/assets/images/Filter-arrow.svg'
 import BreadcrumbArrow from '~/shared/assets/images/Breadcrumb-arrow.svg'
 import SearchIcon from '~/shared/assets/images/Search.svg'
@@ -35,39 +36,42 @@ import NoEdit from "~/shared/assets/images/NoEdit.svg"
 
 interface Props {
     name:
-    | 'computers'
-    | 'phones'
-    | 'gaming'
-    | 'headphones'
-    | 'cameras'
-    | 'smart-watches'
-    | 'arrow-left'
-    | 'arrow-right'
-    | 'favourite'
-    | 'star'
-    | 'star_half'
+    | "computers"
+    | "phones"
+    | "gaming"
+    | "headphones"
+    | "cameras"
+    | "smart-watches"
+    | "arrow-left"
+    | "arrow-right"
+    | "favourite"
+    | "star"
+    | "star_half"
     | "delete_card"
-    | 'filter-arrow'
-    | 'breadcrumb-arrow'
-    | 'search'
-    | 'expand-arrow-down'
-    | 'account'
-    | 'battery-logo'
-    | 'cart'
-    | 'core-logo'
-    | 'favourites'
-    | 'logo-cpu'
-    | 'product-camera-logo'
-    | 'product-camera-rotate'
-    | 'screen-size-logo'
-    | 'edit'
-    | 'noedit'
+    | "filter-arrow"
+    | "breadcrumb-arrow"
+    | "search"
+    | "expand-arrow-down"
+    | "account"
+    | "battery-logo"
+    | "cart"
+    | "core-logo"
+    | "favourites"
+    | "logo-cpu"
+    | "product-camera-logo"
+    | "product-camera-rotate"
+    | "screen-size-logo"
+    | "edit"
+    | "noedit";
 
-    size?: 'sm' | 'md' | 'lg'
+    size?: "sm" | "md" | "lg";
+
+    active?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    size: 'md'
+    size: "md",
+    active: false,
 })
 
 const iconSrc = computed(() => {
@@ -84,7 +88,9 @@ const iconSrc = computed(() => {
         star: Star,
         'star-half': Star_half,
         'delete_card': Delete_card,
-        favourite: HeartIcon,
+        favourite: props.active
+            ? HeartActiveIcon
+            : HeartIcon,
         'filter-arrow': FilterArrow,
         'breadcrumb-arrow': BreadcrumbArrow,
         search: SearchIcon,

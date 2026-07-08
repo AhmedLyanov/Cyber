@@ -3,7 +3,7 @@
 
 <div align="center">
 
-<img src="docs/Logo.svg" alt="Cyber Logo" width="220"/>
+<img src="docs/Cyber-Logo.svg" alt="Cyber Cover" width="220"/>
 
 # Cyber
 
