@@ -7,7 +7,7 @@
         </div>
 
         <div v-if="isLoading" class="grid grid-cols-4 gap-4">
-            <Skeleton v-for="n in 8" :key="n" class="h-[432px] w-full rounded-lg" />
+            <Skeleton v-for="n in 8" :key="n" class="h-[432px] w-[268px] rounded-lg" />
         </div>
 
         <div v-else class="grid grid-cols-4 gap-4">
