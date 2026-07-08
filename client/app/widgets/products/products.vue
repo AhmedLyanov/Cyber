@@ -6,9 +6,12 @@
             <Typography variant="h4">Featured Products</Typography>
         </div>
 
-        <div class="grid grid-cols-4 gap-4">
-            <ProductCard v-for="product in displayedProducts" :key="product._id" :product="product" />
+        <div v-if="isLoading" class="grid grid-cols-4 gap-4">
+            <Skeleton v-for="n in 8" :key="n" class="h-[432px] w-full rounded-lg" />
+        </div>
 
+        <div v-else class="grid grid-cols-4 gap-4">
+            <ProductCard v-for="product in displayedProducts" :key="product._id" :product="product" />
         </div>
     </div>
 </template>
@@ -16,12 +19,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 
-import { Typography } from "~/shared/ui";
+import { Typography, Skeleton } from "~/shared/ui";
 import ProductCard from "~/entities/product/ui/product-card.vue";
 
 import { getProducts } from "~/entities/product/api/get-products";
 import type { Product } from "~/entities/product/model/types";
 
+const isLoading = ref(true);
 const products = ref<Product[]>([]);
 
 const displayedProducts = computed(() => {
@@ -29,8 +33,11 @@ const displayedProducts = computed(() => {
 });
 
 onMounted(async () => {
-    const response = await getProducts();
-
-    products.value = response.products;
+    try {
+        const response = await getProducts();
+        products.value = response.products;
+    } finally {
+        isLoading.value = false;
+    }
 });
 </script>

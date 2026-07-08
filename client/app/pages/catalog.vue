@@ -32,8 +32,8 @@
             default-label="By rating" />
         </div>
 
-        <div v-if="isLoading" class="flex items-center justify-center min-h-[500px]">
-          <Spinner class="size-10" />
+        <div v-if="isLoading" class="flex flex-wrap gap-4">
+          <Skeleton v-for="n in 9" :key="n" class="h-[432px] w-[268px] rounded-xl" />
         </div>
 
         <template v-else>
@@ -60,7 +60,7 @@ import {
   Dropdown,
   Pagination,
   FilterAccordion,
-  Spinner
+  Skeleton,
 } from "~/shared/ui";
 
 import {
@@ -80,7 +80,7 @@ import type {
 } from "~/entities/product/model/types";
 
 const products = ref<Product[]>([]);
-const isLoading = ref(false);
+const isLoading = ref(true);
 
 const selectedSort = ref("");
 

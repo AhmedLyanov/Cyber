@@ -8,7 +8,8 @@ export { default as Logo } from "./logo/logo.vue";
 export { default as Pagination } from "./pagination/pagination.vue";
 export { default as Button } from "./button/button.vue";
 export { default as Icon } from "./icon/icon.vue";
-export { default as ColorPicker } from './color-picker/color-picker.vue';
-export type { ColorOption } from './color-picker/color-picker.vue';
+export { default as ColorPicker } from "./color-picker/color-picker.vue";
+export type { ColorOption } from "./color-picker/color-picker.vue";
 
 export { default as Spinner } from "./shadcn/spinner/Spinner.vue";
+export { default as Skeleton } from "./shadcn/skeleton/Skeleton.vue";
