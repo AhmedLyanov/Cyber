@@ -1,6 +1,6 @@
 <template>
   <div
-    class="group flex flex-col rounded-2xl border border-border bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+    class="group flex flex-col rounded-2xl border border-border bg-white p-6 transition-all duration-300 "
   >
     <div class="flex items-start gap-6">
       <NuxtLink
@@ -10,7 +10,7 @@
         <NuxtImg
           :src="imageUrl"
           :alt="product.title"
-          class="h-32 w-32 object-contain transition duration-300 group-hover:scale-105"
+          class="h-32 w-32 object-contain transition duration-300"
         />
       </NuxtLink>
 

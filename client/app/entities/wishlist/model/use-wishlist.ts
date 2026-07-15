@@ -55,7 +55,6 @@ export const useWishlist = () => {
   });
 
   watchEffect(() => {
-  console.log("Wishlist ids:", wishlistIds.value);
 });
   const isInWishlist = (productId: string) => {
     return wishlistIds.value.includes(productId);
