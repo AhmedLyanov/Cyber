@@ -17,6 +17,7 @@ import authRouter from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import cartRoutes from "./routes/cart.routes.js"
 import wishlistRoutes from "./routes/wishlist.routes.js";
+import reviewRoutes from "./routes/review.routes.js"; 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const CLIENT_ORIGINS = [
@@ -36,7 +37,7 @@ app.use("/wishlist", wishlistRoutes);
 app.use("/product", productRoutes);
 app.use("/auth", authRouter);
 app.use('/cart/', cartRoutes)
-
+app.use("/review", reviewRoutes);
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Worked!" });
 });

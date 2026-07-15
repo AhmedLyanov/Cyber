@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
-import {
-  PRODUCT_TYPES,
-  PRODUCT_BRANDS,
-} from "../constants/productTypes.js";
+import { PRODUCT_TYPES, PRODUCT_BRANDS } from "../constants/productTypes.js";
 
 const ProductSchema = new mongoose.Schema(
   {
@@ -73,7 +70,14 @@ const ProductSchema = new mongoose.Schema(
       ref: "User",
       index: true,
     },
-
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    numReviews: {
+      type: Number,
+      default: 0,
+    },
     isActive: {
       type: Boolean,
       default: true,
@@ -81,7 +85,7 @@ const ProductSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 ProductSchema.methods.checkDiscountStatus = function () {
@@ -95,8 +99,7 @@ ProductSchema.methods.checkDiscountStatus = function () {
 
   if (hasDateRestrictions) {
     this.isDiscountActive =
-      now >= this.discountStart &&
-      now <= this.discountEnd;
+      now >= this.discountStart && now <= this.discountEnd;
   } else {
     this.isDiscountActive = true;
   }
@@ -111,10 +114,7 @@ ProductSchema.methods.softDelete = function () {
 
 ProductSchema.methods.calculateDiscountPrice = function () {
   if (this.discountPercentage > 0 && this.originalPrice) {
-    return Math.round(
-      this.originalPrice *
-        (1 - this.discountPercentage / 100)
-    );
+    return Math.round(this.originalPrice * (1 - this.discountPercentage / 100));
   }
 
   return this.originalPrice || this.price;
@@ -127,10 +127,7 @@ ProductSchema.pre("save", function (next) {
 
   this.checkDiscountStatus();
 
-  if (
-    this.isDiscountActive &&
-    this.discountPercentage > 0
-  ) {
+  if (this.isDiscountActive && this.discountPercentage > 0) {
     this.price = this.calculateDiscountPrice();
     this.hasDiscount = true;
   } else {

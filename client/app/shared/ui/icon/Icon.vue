@@ -30,6 +30,7 @@ import ProductCameraRotate from '~/shared/assets/images/product-camera-rotate.sv
 import ScreenSizeLogo from '~/shared/assets/images/Screen-size-logo.svg'
 import Star from '~/shared/assets/images/Star.svg'
 import Star_half from '~/shared/assets/images/Star-half.svg'
+import StarEmpty from '~/shared/assets/images/Star-empty.svg'
 import Delete_card from "~/shared/assets/images/Close-cart.svg"
 import Edit from "~/shared/assets/images/Edit.svg"
 import NoEdit from "~/shared/assets/images/NoEdit.svg"
@@ -46,7 +47,8 @@ interface Props {
     | "arrow-right"
     | "favourite"
     | "star"
-    | "star_half"
+    | "star-half"
+    | "star-empty"
     | "delete_card"
     | "filter-arrow"
     | "breadcrumb-arrow"
@@ -87,6 +89,7 @@ const iconSrc = computed(() => {
         'expand-arrow-down': ExpandArrowDown,
         star: Star,
         'star-half': Star_half,
+        'star-empty': StarEmpty,
         'delete_card': Delete_card,
         favourite: props.active
             ? HeartActiveIcon
