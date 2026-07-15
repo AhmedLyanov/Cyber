@@ -3,11 +3,14 @@
     <div class="grid gap-12">
       <Typography variant="h3">Reviews</Typography>
       <div v-if="totalReviews > 0" class="flex gap-15">
-        <div class="w-[184px] h-[192px] bg-product-reviews-rating rounded-[16px] flex flex-col items-center justify-center">
+        <div
+          class="w-[184px] h-[192px] bg-product-reviews-rating rounded-[16px] flex flex-col items-center justify-center">
           <Typography class="text-[56px] font-medium leading-none" variant="body">{{ averageRating }}</Typography>
-          <Typography class="mt-4 text-product-description" variant="description">of {{ totalReviews }} reviews</Typography>
+          <Typography class="mt-4 text-product-description" variant="description">of {{ totalReviews }} reviews
+          </Typography>
           <div class="flex gap-1 mt-6">
-            <Icon v-for="i in 5" :key="i" :name="i <= Math.round(Number(averageRating)) ? 'star' : 'star-empty'" size="md" />
+            <Icon v-for="i in 5" :key="i" :name="i <= Math.round(Number(averageRating)) ? 'star' : 'star-empty'"
+              size="md" />
           </div>
         </div>
 
@@ -23,24 +26,22 @@
       </div>
       <div v-if="isAuthenticated">
         <div class="flex items-center gap-2 mb-4">
-          <button
-            v-for="star in 5"
-            :key="star"
-            type="button"
-            @click="rating = star"
-            @mouseenter="hoverRating = star"
-            @mouseleave="hoverRating = 0"
-            class="transition-transform hover:scale-110"
-          >
-            <Icon 
-              :name="star <= (hoverRating || rating) ? 'star' : 'star-empty'" 
-              size="lg"
-              :class="star <= (hoverRating || rating) ? 'text-yellow-400' : 'text-gray-300'"
-            />
+          <button v-for="star in 5" :key="star" type="button" @click="rating = star" @mouseenter="hoverRating = star"
+            @mouseleave="hoverRating = 0" class="transition-transform hover:scale-110">
+            <Icon :name="star <= (hoverRating || rating) ? 'star' : 'star-empty'" size="lg"
+              :class="star <= (hoverRating || rating) ? 'text-yellow-400' : 'text-gray-300'" />
           </button>
         </div>
-        
-        <form @submit.prevent="handleCreateReview" class="flex align-center gap-4 items-start">
+        <Alert v-if="message" :variant="message.type === 'error' ? 'destructive' : 'default'" class="mb-6">
+          <AlertTitle>
+            {{ message.title }}
+          </AlertTitle>
+
+          <AlertDescription>
+            {{ message.text }}
+          </AlertDescription>
+        </Alert>
+        <form @submit.prevent="handleCreateReview" class="flex justify-center gap-4 items-start">
           <div class="flex-1">
             <Input v-model="comment" placeholder="Leave Comment" variant="comment" />
           </div>
@@ -58,6 +59,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { Typography, Icon, Input, Button } from "~/shared/ui";
+import {
+  Alert,
+  AlertTitle,
+  AlertDescription,
+} from "~/shared/ui/shadcn/alert";
+
 import ReviewCard from "~/entities/review/ui/review-card.vue";
 import { reviewAPI } from "~/entities/review/api/review.api";
 
@@ -68,24 +75,32 @@ const props = defineProps<{
 }>();
 
 const reviews = ref([]);
-const ratingStats = ref([
-  { label: 'Excellent', value: 0, percent: 0 },
-  { label: 'Good', value: 0, percent: 0 },
-  { label: 'Average', value: 0, percent: 0 },
-  { label: 'Below Average', value: 0, percent: 0 },
-  { label: 'Poor', value: 0, percent: 0 }
-]);
 const averageRating = ref("0");
 const totalReviews = ref(0);
+
+const ratingStats = ref([
+  { label: "Excellent", value: 0, percent: 0 },
+  { label: "Good", value: 0, percent: 0 },
+  { label: "Average", value: 0, percent: 0 },
+  { label: "Below Average", value: 0, percent: 0 },
+  { label: "Poor", value: 0, percent: 0 },
+]);
+
 const rating = ref(0);
 const hoverRating = ref(0);
 const comment = ref("");
 
+const message = ref<{
+  type: "success" | "error";
+  title: string;
+  text: string;
+} | null>(null);
+
 const fetchReviews = async () => {
   try {
     const data = await reviewAPI.getProductReviews(props.productId);
-    
-    reviews.value = data.reviews.map(r => ({
+
+    reviews.value = data.reviews.map((r: any) => ({
       id: r._id,
       author: r.user?.name || "Anonymous",
       avatar: r.user?.avatar || "",
@@ -98,37 +113,55 @@ const fetchReviews = async () => {
       comment: r.comment,
       userId: r.user?._id || "",
     }));
-    
+
     averageRating.value = data.averageRating;
     totalReviews.value = data.pagination.total;
-    
-    if (data.stats && data.stats.length > 0) {
+
+    if (data.stats?.length) {
       ratingStats.value = data.stats;
     }
-  } catch (err) {
-    console.error("Failed to fetch reviews:", err);
+  } catch {
+    message.value = {
+      type: "error",
+      title: "Loading failed",
+      text: "Unable to load product reviews.",
+    };
   }
 };
 
 const handleCreateReview = async () => {
-  if (!rating.value || comment.value.length < 10) return;
-  
+  if (!rating.value || comment.value.trim().length < 10) return;
+
+  message.value = null;
+
   try {
     await reviewAPI.createReview(props.productId, {
       rating: rating.value,
-      comment: comment.value,
+      comment: comment.value.trim(),
     });
-    
+
+    message.value = {
+      type: "success",
+      title: "Review published",
+      text: "Your review has been published successfully.",
+    };
+
     rating.value = 0;
+    hoverRating.value = 0;
     comment.value = "";
+
     await fetchReviews();
   } catch (err: any) {
-    console.error("Failed to create review:", err);
-    alert(err.data?.message || "Failed to create review");
+    message.value = {
+      type: "error",
+      title: "Unable to submit review",
+      text:
+        err?.data?.message ??
+        err?.message ??
+        "An unexpected error occurred.",
+    };
   }
 };
 
-onMounted(() => {
-  fetchReviews();
-});
+onMounted(fetchReviews);
 </script>
